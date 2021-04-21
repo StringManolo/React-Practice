@@ -30,7 +30,7 @@ const Keypad = props => (
     <article>
       <Button innerText="*" sharedCallback={props.sharedCallback} />
       <Button innerText="0" sharedCallback={props.sharedCallback} />
-      <Button innerText="%" sharedCallback={props.sharedCallback} />
+      <Button innerText="/" sharedCallback={props.sharedCallback} />
       <Button innerText="=" sharedCallback={props.sharedCallback} backgroundColor={simbolsBackground} color={simbolsColor}/>
     </article>
   </section>
