@@ -10,8 +10,17 @@ const Calc = () => {
     /* The point of this app is practice react, not to build a calculator.
      * thats why I'm using eval and not multiple functions or a math expression parser
      * DO NOT USE EVAL IN REAL APPLICATIONS */
-    // eslint-disable-next-line
-    changeValue(eval(screenValue));
+    let res = 0;
+    try {
+      // eslint-disable-next-line
+      res = eval(screenValue);
+    } catch (er) {
+      res = 0;
+    }
+    if (isNaN(res)) {
+      res = 0;
+    }
+    changeValue(res);
   }
 
   const buttonCallback = evnt => {
