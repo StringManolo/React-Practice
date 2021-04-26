@@ -31,7 +31,8 @@ Password: ${passwordValue}`);
           Password:&nbsp;
           <input type="password" className="loginPassword" value={passwordValue} onChange={hPasswordChange} />
         </label>
-	<Link to="/forgotPassword">Forgot Password ?</Link>
+	<Link to="/sigin" className="formLogin siginLink">Create New Account ?</Link>
+	<Link to="/forgotPassword" className="formLogin forgotPasswordLink">Forgot Password ?</Link>
         <input type="submit" className="loginSubmit" value="submit" />
       </form>
     </>

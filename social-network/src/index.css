@@ -5,9 +5,19 @@ body {
   text-align: middle;
 }
 
-.link.homeLink {
+.link.homeLink, .formLogin.siginLink {
   display: block;
 }
+
+.formLogin.siginLink {
+  margin-left: 1px;
+}
+
+.formLogin.forgotPasswordLink, .formSigin.loginLink {
+  display: inline-block;
+  margin-left: 1px;
+}
+
 
 .form.formSigin, .form.formLogin {
   width: 280px;
@@ -37,11 +47,11 @@ body {
 }
 
 .siginSubmit {
-  margin-left: 223px;
+  margin-left: 25px;
   background-color: #fff;
 }
 
 .loginSubmit {
-  margin-left: 84px;
+  margin-left: 83px;
   background-color: #fff;
 }

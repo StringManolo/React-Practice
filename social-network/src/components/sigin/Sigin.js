@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Sigin = () => {
   const [ emailValue, setEmail ] = useState("example@gmail.com");
@@ -39,6 +40,7 @@ Tos: ${tosValue}`);
       <label className="siginLabel">
         <input type="checkbox" checked={tosValue} onChange={hTosChange} required /> I acept the terms of service
       </label>
+        <Link to="/login" className="formSigin loginLink">I already have an account</Link>
       <input type="submit" className="siginSubmit" value="submit" />
     </form>
     </>
