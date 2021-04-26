@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  text-align: middle;
+}
+
+.link.homeLink {
+  display: block;
+}
+
+.form.formSigin, .form.formLogin {
+  width: 280px;
+  background-color: #fea200;
+  border: 2px solid black;
+  padding: 4px;
+  margin: 0 auto;
+}
+
+.siginLabel, .loginLabel {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.siginTitle {
+  width: 285px;
+  margin: 0 auto;
+}
+
+.loginTitle {
+  width: 232px;
+  margin: 0 auto;
+}
+
+.siginPassword, .siginEmail, .loginEmail, .loginPassword {
+  width: 275px;
+}
+
+.siginSubmit {
+  margin-left: 223px;
+  background-color: #fff;
+}
+
+.loginSubmit {
+  margin-left: 84px;
+  background-color: #fff;
+}
