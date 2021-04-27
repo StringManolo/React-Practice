@@ -5,8 +5,65 @@ body {
   text-align: middle;
 }
 
-.link.homeLink, .formLogin.siginLink {
+.formLogin.siginLink {
   display: block;
+}
+
+.homeLink.loginLink, .homeLink.siginLink {
+  display: inline-block;
+}
+
+.homeDiv {
+  margin: 12px;
+  background-color: #ffb544;
+}
+
+.homeTitle {
+  width: 224px;
+  font-size: 4em;
+  /* border: 3px solid black; */
+  margin: 0 auto;
+  padding-top: 20%;
+  padding-bottom: 6%;
+}
+
+.homeLinks {
+  display: flex;
+  justify-content: space-between;
+}
+
+.homeLink.loginLink {
+  width: 160px;
+  background-color: #fff;
+  color: #000;
+  border-top: 2px solid black;
+  border-right: 1px solid black;
+  border-bottom: 0;
+  border-left: 0;
+  padding-left: 12px;
+  font-size: 3.2em;
+  text-align: middle;
+  text-decoration: none;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 4px;
+}
+
+.homeLink.siginLink {
+  width: 155px;
+  background-color: #fff;
+  color: #000;
+  border-top: 2px solid black;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 1px solid black;
+  font-size: 3.2em;
+  text-align: right;
+  text-decoration: none;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-right: 12px;
+  padding-bottom: 4px;
 }
 
 .formLogin.siginLink {
@@ -21,7 +78,7 @@ body {
 
 .form.formSigin, .form.formLogin {
   width: 280px;
-  background-color: #fea200;
+  background-color: #ffb544; /* #fea200;*/
   border: 2px solid black;
   padding: 4px;
   margin: 0 auto;

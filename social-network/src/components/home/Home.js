@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 
 const Home = () => (
-  <>
-    <Link to="/login" className="link homeLink">Login</Link>
-    <Link to="/sigin" className="link homeLink">Sigin</Link>
-  </>
+  <div className="homeDiv">
+    <h1 className="homeTitle">SNRPG</h1>
+    <nav className="homeLinks">
+      <Link to="/login" className="homeLink loginLink">Login</Link>
+      <Link to="/sigin" className="homeLink siginLink">Sigin</Link>
+    </nav>
+  </div>
 )
 
 export default Home;
