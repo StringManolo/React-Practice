@@ -1,12 +1,35 @@
 const express = require("express");
-const bodyParser = require("body-parser");                      const MongoClient = require("mongodb").MongoClient;
-const MongoServer = require("mongodb").Server;                  const session = require("express-session");
+const bodyParser = require("body-parser");
+const MongoClient = require("mongodb").MongoClient;
+const MongoServer = require("mongodb").Server;
+const session = require("express-session");
+const multipart = require("express-parse-multipart");
+const multipartToString = formData => {
+  let data = {};
+  for(let i in formData) {
+    switch(formData[i].name) {
+      case "email":
+        data.email = formData[i].data.toString();
+      break;
+
+      case "password":
+        data.password = formData[i].data.toString();
+      break;
+
+      case "tos":
+        data.tos = formData[i].data.toString();
+    }
+  }
+  return (data.tos ? [data.email, data.password, data.tos] : [data.email, data.password]);
+}
+
 
 const app = express();
-app.use(bodyParser. urlencoded({ extended: true }), session({
-  secret: '9EUXNW-JEBCZ2-717',
+app.use(bodyParser.urlencoded({ extended: true }), session({
+  secret: '8ERX-PWGEBCZA-7Z4',
   resave: true,
-  saveUninitialized: true                                       }), /* allow fetch from react in dev */ (req, res, next) => {
+  saveUninitialized: true
+}), /* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "*");
   next();
@@ -14,9 +37,10 @@ app.use(bodyParser. urlencoded({ extended: true }), session({
 
 
 const url = "mongodb://localhost:27017/";
-const dbname = "socialNetwork";
-const collection = "accounts";
-                                                                /* TODO: Add csfr token to react forms */                       
+const dbname = "socialNetwork";                                 const collection = "accounts";
+
+/* TODO: Add csfr token to react forms */
+
 const insertDocumentIntoCollection = (dbname, collection, callback) => {
   console.log("Inserting called. Conecting...");
   MongoClient.connect(url, {useUnifiedTopology: true}, (err, db) => {
@@ -24,13 +48,15 @@ const insertDocumentIntoCollection = (dbname, collection, callback) => {
       throw err;
     }
 
-    const dbo = db.db(dbname);                                  
+    const dbo = db.db(dbname);
+
     dbo.listCollections().toArray( (err, collections) => {
       if (err) {
         throw err;
       }
 
-      for (let i in collections) {                                      if(collections[i].name == collection) {
+      for (let i in collections) {
+        if(collections[i].name == collection) {
           console.log(`Found ${collection} colection`);
         }
       }
@@ -55,10 +81,15 @@ app.get("/", (req, res) => {
 });
 
 
-app.post("/sigin", (req, res) => {
-  if (!req.body.email || !req.body.password || !req.body.tos) {
-    res.send(`Missing email, password or tos`);
+app.post("/sigin", multipart, (req, res) => {
+  if (!req.formData && (!req.body.email || !req.body.password || !req.body.tos)) {
+    res.send(JSON.stringify({ result: false, error: "Missing email, password or tos"}));
+console.log("req.body.email: " + req.body.email);
     return;
+  }
+
+  if (req.formData) {
+    [req.body.email, req.body.password, req.body.tos] = multipartToString(req.formData);
   }
 
   if (!!req.body.tos == true) {
@@ -97,10 +128,14 @@ console.log("Account created");
 });
 
 
-app.post("/login", (req, res) => {
-  if (!req.body.email || !req.body.password) {
+app.post("/login", multipart, (req, res) => {
+  if (!req.formData && (!req.body.email || !req.body.password)) {
     res.send(JSON.stringify({result: false, error: "Missing email or password"}));
     return;
+  }
+
+  if (req.formData) {
+    [req.body.email, req.body.password] = multipartToString(req.formData);
   }
 
   // TODO: validate email and password before compare
