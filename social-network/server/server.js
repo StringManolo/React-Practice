@@ -37,7 +37,8 @@ app.use(bodyParser.urlencoded({ extended: true }), session({
 
 
 const url = "mongodb://localhost:27017/";
-const dbname = "socialNetwork";                                 const collection = "accounts";
+const dbname = "socialNetwork";
+const collection = "accounts";
 
 /* TODO: Add csfr token to react forms */
 
