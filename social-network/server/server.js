@@ -1,15 +1,22 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
-const MongoServer = require("mongodb").Server;
+const bodyParser = require("body-parser");                      const MongoClient = require("mongodb").MongoClient;
+const MongoServer = require("mongodb").Server;                  const session = require("express-session");
 
 const app = express();
-app.use(bodyParser. urlencoded({ extended: true }));
-const url = "mongodb://localhost:27017/";
+app.use(bodyParser. urlencoded({ extended: true }), session({
+  secret: '9EUXNW-JEBCZ2-717',
+  resave: true,
+  saveUninitialized: true                                       }), /* allow fetch from react in dev */ (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
 
+
+const url = "mongodb://localhost:27017/";
 const dbname = "socialNetwork";
 const collection = "accounts";
-
+                                                                /* TODO: Add csfr token to react forms */                       
 const insertDocumentIntoCollection = (dbname, collection, callback) => {
   console.log("Inserting called. Conecting...");
   MongoClient.connect(url, {useUnifiedTopology: true}, (err, db) => {
@@ -17,15 +24,13 @@ const insertDocumentIntoCollection = (dbname, collection, callback) => {
       throw err;
     }
 
-    const dbo = db.db(dbname);
-
+    const dbo = db.db(dbname);                                  
     dbo.listCollections().toArray( (err, collections) => {
       if (err) {
         throw err;
       }
 
-      for (let i in collections) {
-        if(collections[i].name == collection) {
+      for (let i in collections) {                                      if(collections[i].name == collection) {
           console.log(`Found ${collection} colection`);
         }
       }
@@ -35,17 +40,17 @@ const insertDocumentIntoCollection = (dbname, collection, callback) => {
   });
 }
 
-
 app.listen(8000, () => {
   console.log("Express listening at http://127.0.0.1:8000");
 });
 
 app.get("/", (req, res) => {
   res.send(`Api endpoints:
-    1-GET /
-    2-POST /sigin
-    3-POST /forgotPassword
-    4-POST /login
+    1 - GET      /
+    2 - POST     /sigin
+    3 - POST     /forgotPassword
+    4 - POST     /login
+    5 - GET      /logout
   `);
 });
 
@@ -61,6 +66,7 @@ app.post("/sigin", (req, res) => {
     insertDocumentIntoCollection(dbname, collection, dbo => {
       dbo.collection(collection).find(req.body.email).toArray( (err, res2) => {
         if (err) {
+          res.send(JSON.stringify({ result: false, error: "server error"}));
           throw err;
         }
 
@@ -68,7 +74,7 @@ app.post("/sigin", (req, res) => {
         for(let i in res2) {
           if (res2[i].email == req.body.email) {
             console.log("Email already exists");
-            res.send("Email already exists");
+            res.send(JSON.stringify({ result: false, error: "exists"}));
             emailAlreadySigin = true;
           }
           console.log(res2[i]);
@@ -81,7 +87,8 @@ app.post("/sigin", (req, res) => {
             password: req.body.password
           };
           dbo.collection(collection).insertOne(acc);
-          res.send(`Account created`);
+          res.send(JSON.stringify({ result: true }));
+console.log("Account created");
         }
 
       });
@@ -92,7 +99,7 @@ app.post("/sigin", (req, res) => {
 
 app.post("/login", (req, res) => {
   if (!req.body.email || !req.body.password) {
-    res.send(`Missing email or password`);
+    res.send(JSON.stringify({result: false, error: "Missing email or password"}));
     return;
   }
 
@@ -100,23 +107,46 @@ app.post("/login", (req, res) => {
   insertDocumentIntoCollection(dbname, collection, dbo => {
     dbo.collection(collection).find(req.body.email).toArray( (err, res2) => {
       if (err) {
-        res.send(`Error finding email`);
+        res.send(JSON.stringify({ result: false, error: "server error"}));
+        console.log("Error finding email");
         throw err;
       }
 
       for(let i in res2) {
         if (res2[i].email == req.body.email && res2[i].password == req.body.password) {
-          console.log(`${req.body.password} is logged in`);
-          res.send(`Logged in`);
+          console.log(`${req.body.email} is logged in`);
+          req.session.email = req.body.email
+          res.send(JSON.stringify({ result: true }));
+console.log("Logged in");
+
           return;
         }
       }
-      res.send(`Not logged in`);
+      res.send(JSON.stringify({ result: false, error: "invalid credentials"}));
+console.log("Not logged in");
     });
   });
 });
 
 
 app.post("/forgotPassword", (req, res) => {
-  res.send(`Not implemented yet.`);
+  res.send(JSON.stringify({ result: false, error: "unavailable"}));
+});
+
+
+app.get("/logout", (req, res) => {
+  if (req.session.email) {
+    req.session.destroy();
+    res.send(JSON.stringify({ result: true}));
+  } else {
+    res.send(JSON.stringify({ result: false, error: "no session" }));
+  }
+});
+
+app.get("/profile", (req, res) => {
+  if (req.session.email) {
+    res.send(JSON.stringify({ result: true, data: "Your profile data: ${USER_DATA}"}));
+  } else {
+    res.send(JSON.stringify({ result: false, error: "unavailable"}));
+  }
 });
