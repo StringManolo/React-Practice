@@ -7,6 +7,22 @@ const Login = () => {
 
   const hSubmit = e => {
     e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("email", emailValue);
+    formData.append("password", passwordValue)
+
+    fetch("http://localhost:8000/login", {
+      method: "post",
+      /*credentials: "include", */
+      body: formData
+    })
+    .then( res => res.json())
+    .then( data => {
+      alert(`Express login response: ${JSON.stringify(data, null, 2)}`);
+    })
+    .catch( err => alert(err) );
+
     alert(`Email: ${emailValue}
 Password: ${passwordValue}`);
   }

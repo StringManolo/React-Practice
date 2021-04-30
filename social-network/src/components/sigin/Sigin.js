@@ -8,6 +8,21 @@ const Sigin = () => {
 
   const hSubmit = e => {
     e.preventDefault();
+    let formData = new FormData();
+    formData.append("email", emailValue);
+    formData.append("password", passwordValue);
+    formData.append("tos", tosValue);
+
+    fetch("http://localhost:8000/sigin", {
+      method: "post",
+      body: formData
+    })
+    .then( res => res.json())
+    .then( data => {
+      alert(`Express sigin response: ${JSON.stringify(data, null, 2)}`);
+    })
+    .catch( err => alert(err) );
+
     alert(`Email: ${emailValue}
 Password: ${passwordValue}
 Tos: ${tosValue}`);
