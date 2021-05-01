@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 const Login = () => {
   const [ emailValue, setEmail ] = useState("example@gmail.com");
   const [ passwordValue, setPassword ] = useState("123");
+  const [ redir, setRedir ] = useState("");
 
   const hSubmit = e => {
     e.preventDefault();
@@ -19,7 +20,10 @@ const Login = () => {
     })
     .then( res => res.json())
     .then( data => {
-      alert(`Express login response: ${JSON.stringify(data, null, 2)}`);
+
+      if (data.result === true) {
+        setRedir(<Redirect push to={{ pathname: "/profile"}} />);
+      }
     })
     .catch( err => alert(err) );
 
@@ -51,6 +55,7 @@ Password: ${passwordValue}`);
 	<Link to="/forgotPassword" className="formLogin forgotPasswordLink">Forgot Password ?</Link>
         <input type="submit" className="loginSubmit" value="submit" />
       </form>
+      { redir }
     </>
   )
 }

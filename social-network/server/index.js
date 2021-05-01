@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const MongoServer = require("mongodb").Server;
 const session = require("express-session");
-const multipart = require("express-parse-multipart");           const multipartToString = formData => {
+const multipart = require("express-parse-multipart");
+const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
     switch(formData[i].name) {
@@ -11,7 +12,8 @@ const multipart = require("express-parse-multipart");           const multipartT
         data.email = formData[i].data.toString();
       break;
 
-      case "password":                                                  data.password = formData[i].data.toString();
+      case "password":
+        data.password = formData[i].data.toString();
       break;
 
       case "tos":
@@ -19,7 +21,10 @@ const multipart = require("express-parse-multipart");           const multipartT
     }
   }
   return (data.tos ? [data.email, data.password, data.tos] : [data.email, data.password]);
-}                                                               
+}
+
+const util = require("util");
+
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }), session({
@@ -27,17 +32,20 @@ app.use(bodyParser.urlencoded({ extended: true }), session({
   resave: false,
   saveUninitialized: false,                                       cookie: {
     httpOnly: false
-  }                                                             }), /* allow fetch from react in dev */ (req, res, next) => {
+  }
+}), /* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                                                                  next();
+
+  next();
 });
 
 
 const url = "mongodb://localhost:27017/";
 const dbname = "socialNetwork";
 const collection = "accounts";
+let mySession = false;
 
 /* TODO: Add csfr token to react forms */
 
@@ -150,8 +158,9 @@ app.post("/login", multipart, (req, res) => {
       for(let i in res2) {
         if (res2[i].email == req.body.email && res2[i].password == req.body.password) {
           console.log(`${req.body.email} is logged in`);
-         res.setHeader("Access-Control-Allow-Credentials", "true");
+          res.setHeader("Access-Control-Allow-Credentials", "true");
           req.session.email = req.body.email
+          mySession = req.session.email;
           res.send(JSON.stringify({ result: true }));
 console.log("Logged in");
 
@@ -171,7 +180,8 @@ app.post("/forgotPassword", (req, res) => {
 
 
 app.get("/logout", (req, res) => {
-  if (req.session.email) {
+  //if (req.session.email) {
+  if (mySession) {
     req.session.destroy();
     res.send(JSON.stringify({ result: true}));
   } else {
@@ -180,8 +190,18 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-  if (req.session.email) {
-    res.send(JSON.stringify({ result: true, data: "Your profile data: ${USER_DATA}"}));
+  //if (req.session.email) {
+  if (mySession) {
+    const userData = {
+    /* dummy, req from db instead. getUserData() */
+      email: "fake@gmail.com",
+      posts: [
+        "hello, this is my first post!",
+        "how are you?",
+        "my third post!!"
+      ]
+    }
+    res.send(JSON.stringify({ result: true, data: userData }));
   } else {
     res.send(JSON.stringify({ result: false, error: "unavailable"}));
   }
