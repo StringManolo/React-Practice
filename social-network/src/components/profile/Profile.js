@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 const Profile = () => {
   const [ profileTitle, setProfileTitle ] = useState("");
   const [ profilePosts, setProfilePosts ] = useState("");
+  const [ loginRedir, setLoginRedir ] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8000/profile", {
@@ -15,7 +16,7 @@ const Profile = () => {
 
       if (data.result === true) {
         if (data.data.email) {
-          setProfileTitle(data.data.email);
+          setProfileTitle(data.data.email.split("@")[0]);
         }
 
         if (data.data.posts) {
@@ -31,6 +32,8 @@ const Profile = () => {
           }
           setProfilePosts(posts);
         }
+      } else {
+        setLoginRedir(<Redirect push to={{ pathname: "/login"}} />);
       }
     })
     .catch( err => alert(err) );
@@ -43,7 +46,8 @@ const Profile = () => {
         <Link to="/home" className="profileLink homeLink">Home</Link>
         <Link to="/logout" className="profileLink logoutLink">Logout</Link>
       </nav>
-      <div className="profilePosts">{ profilePosts }</div>
+      <section className="profilePosts">{ profilePosts }</section>
+      { loginRedir }
     </div>
   ) 
 }

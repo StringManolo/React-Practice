@@ -27,8 +27,6 @@ const Login = () => {
     })
     .catch( err => alert(err) );
 
-    alert(`Email: ${emailValue}
-Password: ${passwordValue}`);
   }
 
   const hEmailChange = e => {

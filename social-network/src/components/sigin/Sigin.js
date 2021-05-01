@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 const Sigin = () => {
   const [ emailValue, setEmail ] = useState("example@gmail.com");
   const [ passwordValue, setPassword ] = useState("123");
   const [ tosValue, setTos ] = useState(true);
+  const [ loginRedir, setLoginRedir ] = useState();
 
   const hSubmit = e => {
     e.preventDefault();
@@ -19,13 +20,11 @@ const Sigin = () => {
     })
     .then( res => res.json())
     .then( data => {
-      alert(`Express sigin response: ${JSON.stringify(data, null, 2)}`);
+      if (data.result === true) {
+        setLoginRedir(<Redirect push to={{ pathname: "/login"}} />);
+      }
     })
     .catch( err => alert(err) );
-
-    alert(`Email: ${emailValue}
-Password: ${passwordValue}
-Tos: ${tosValue}`);
   }
 
   const hEmailChange = e => {
@@ -58,6 +57,7 @@ Tos: ${tosValue}`);
         <Link to="/login" className="formSigin loginLink">I already have an account</Link>
       <input type="submit" className="siginSubmit" value="submit" />
     </form>
+    { loginRedir }
     </>
   )
 }

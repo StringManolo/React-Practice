@@ -2,8 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const MongoServer = require("mongodb").Server;
-const session = require("express-session");
-const multipart = require("express-parse-multipart");
+const session = require("express-session");                            const multipart = require("express-parse-multipart");
 const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
@@ -23,14 +22,13 @@ const multipartToString = formData => {
   return (data.tos ? [data.email, data.password, data.tos] : [data.email, data.password]);
 }
 
-const util = require("util");
-
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }), session({
-  secret: '99RX-XWPE3CZH7Z-4',
+  secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
-  saveUninitialized: false,                                       cookie: {
+  saveUninitialized: false,
+  cookie: {
     httpOnly: false
   }
 }), /* allow fetch from react in dev */ (req, res, next) => {
@@ -44,8 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }), session({
 
 const url = "mongodb://localhost:27017/";
 const dbname = "socialNetwork";
-const collection = "accounts";
-let mySession = false;
+const collection = "accounts";                                         let mySession = false;
 
 /* TODO: Add csfr token to react forms */
 
@@ -106,30 +103,33 @@ console.log("req.body.email: " + req.body.email);
       dbo.collection(collection).find(req.body.email).toArray( (err, res2) => {
         if (err) {
           res.send(JSON.stringify({ result: false, error: "server error"}));
-          throw err;
+          return;
         }
 
-        let emailAlreadySigin = false;
-        for(let i in res2) {
-          if (res2[i].email == req.body.email) {
-            console.log("Email already exists");
-            res.send(JSON.stringify({ result: false, error: "exists"}));
-            emailAlreadySigin = true;
+
+        else {
+          let emailAlreadySigin = false;
+          for(let i in res2) {
+            if (res2[i].email == req.body.email) {
+              console.log("Email already exists");
+              res.send(JSON.stringify({ result: false, error: "exists"}));
+              emailAlreadySigin = true;
+              break;
+            }
+            console.log(res2[i]);
           }
-          console.log(res2[i]);
-        }
 
-        if (!emailAlreadySigin) {
-          console.log("Not found email, creating...");
-          const acc = {
-            email: req.body.email, /* TODO: hash password */
-            password: req.body.password
-          };
-          dbo.collection(collection).insertOne(acc);
-          res.send(JSON.stringify({ result: true }));
-console.log("Account created");
+          if (!emailAlreadySigin) {
+            console.log("Not found email, creating...");
+            const acc = {
+              email: req.body.email, //TODO: hash password
+              password: req.body.password
+            };
+            dbo.collection(collection).insertOne(acc);
+            res.send(JSON.stringify({ result: true }));
+            console.log("Account created");
+          }
         }
-
       });
     });
   }
@@ -182,7 +182,8 @@ app.post("/forgotPassword", (req, res) => {
 app.get("/logout", (req, res) => {
   //if (req.session.email) {
   if (mySession) {
-    req.session.destroy();
+    mySession = false;
+    //req.session.destroy();
     res.send(JSON.stringify({ result: true}));
   } else {
     res.send(JSON.stringify({ result: false, error: "no session" }));

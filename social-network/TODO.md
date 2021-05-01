@@ -18,7 +18,7 @@ Validate email, password and tos (input from client) ❌
  
 Use a email service to register a new account ❌   
   
-Use a email service to recover passwords ❌  
+Use a email service to reset passwords ❌  
   
 Implement csfr tokens ❌   
 

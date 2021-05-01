@@ -112,3 +112,47 @@ body {
   margin-left: 83px;
   background-color: #fff;
 }
+
+
+.profileDiv {
+  background-color: #f2f2f2;
+}
+
+.profileTitle {
+
+}
+
+.profileLinks {
+  background-color: #d65a4a;
+  color: #fff;
+}
+
+.profileLink.homeLink, .profileLink.logoutLink {
+  display: inline-block;
+  margin-left: 30px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.profilePosts {
+  width: 40%;
+  margin: 0 auto;
+  padding: 8px 2px 8px 2px;
+  background-color: #fff;
+}
+
+.profilePost {
+  border-bottom: 2px solid #e86;
+}
+
+
+/*
+<div className="profileDiv">
+      <h1 className="profileTitle">{ profileTitle }</h1>
+      <nav className="profileLinks">
+        <Link to="/home" className="profileLink homeLink">Home</Link>
+        <Link to="/logout" className="profileLink logoutLink">Logout</Link>
+      </nav>
+      <div className="profilePosts">{ profilePosts }</div>
+    </div>
+*/
