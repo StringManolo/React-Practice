@@ -28,7 +28,7 @@ const util = require("util");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }), session({
-  secret: '99RX-PWPE6CZA7Z-4',
+  secret: '99RX-XWPE3CZH7Z-4',
   resave: false,
   saveUninitialized: false,                                       cookie: {
     httpOnly: false
