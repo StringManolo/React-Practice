@@ -13,7 +13,6 @@ const Profile = () => {
     })
     .then( res => res.json())
     .then( data => {
-
       if (data.result === true) {
         if (data.data.email) {
           setProfileTitle(data.data.email.split("@")[0]);

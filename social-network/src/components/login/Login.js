@@ -15,12 +15,11 @@ const Login = () => {
 
     fetch("http://localhost:8000/login", {
       method: "post",
-      /*credentials: "include", */
+      credentials: "include", 
       body: formData
     })
     .then( res => res.json())
     .then( data => {
-
       if (data.result === true) {
         setRedir(<Redirect push to={{ pathname: "/profile"}} />);
       }
