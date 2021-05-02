@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 
+import ProfileInfo from "./ProfileInfo";
+
 const Profile = () => {
   const [ profileTitle, setProfileTitle ] = useState("");
   const [ profilePosts, setProfilePosts ] = useState("");
+  const [ profileImage, setProfileImage ] = useState("");
+  const [ profileFollowers, setProfileFollowers ] = useState("");
+  const [ profileFollowing, setProfileFollowing ] = useState("");
   const [ loginRedir, setLoginRedir ] = useState("");
+
 
   useEffect(() => {
     fetch("http://localhost:8000/profile", {
@@ -18,6 +24,18 @@ const Profile = () => {
           setProfileTitle(data.data.email.split("@")[0]);
         }
 
+        if (data.data.followers) {
+          setProfileFollowers(data.data.followers.length);
+	}
+
+	if (data.data.following) {
+          setProfileFollowing(data.data.following.length);
+        }
+  
+	if (data.data.image) {
+          setProfileImage(data.data.image);
+	}
+		
         if (data.data.posts) {
           let posts = [];
           const availablePosts = data.data.posts;
@@ -40,11 +58,11 @@ const Profile = () => {
 	
   return (
     <div className="profileDiv">
-      <h1 className="profileTitle">{ profileTitle }</h1>
       <nav className="profileLinks">
         <Link to="/home" className="profileLink homeLink">Home</Link>
         <Link to="/logout" className="profileLink logoutLink">Logout</Link>
       </nav>
+      <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
       <section className="profilePosts">{ profilePosts }</section>
       { loginRedir }
     </div>

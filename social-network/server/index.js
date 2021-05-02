@@ -161,6 +161,12 @@ app.post("/login", multipart, (req, res) => {
           console.log(`${req.body.email} is logged in`);
           res.setHeader("Access-Control-Allow-Credentials", "true");
           req.session.email = req.body.email
+/* insert new session on MongoDB */
+          /*res2[i].session = req.session.email;
+          dbo.collection(collection).insertOne(res2[i]);
+console.log(`FULL DATA? ${JSON.stringify(res2[i], null, 2)}`);
+          */
+/* end insertion */
           res.send(JSON.stringify({ result: true }));
 console.log("Logged in");
 
@@ -180,6 +186,7 @@ app.post("/forgotPassword", (req, res) => {
 
 
 app.get("/logout", (req, res) => {
+  //if (req.session.email) {
   if (req.session.email) {
     req.session.destroy();
     res.send(JSON.stringify({ result: true}));
@@ -190,12 +197,16 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/profile", (req, res) => {
+  //if (req.session.email) {
   if (req.session.email) {
     const userData = {
     /* dummy, req from db instead. getUserData() */
-      email: "fake@gmail.com",
+      email: "username@gmail.com",
+      image: "/favicon.ico",
+      followers: [ "paco", "antonio", "arturo" ],
+      following: [ "antonio" ],
       posts: [
-        "hello, this is my first post!",
+        "Hello, this is my first post!",
         "how are you?",
         "my third post!!"
       ]
