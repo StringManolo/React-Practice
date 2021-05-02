@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 
 import ProfileInfo from "./ProfileInfo";
 import CreatePost from "./CreatePost";
+import Promotion from "./Promotion";
 
 const Profile = () => {
   const [ profileTitle, setProfileTitle ] = useState("");
@@ -74,6 +75,7 @@ const Profile = () => {
       </nav>
       <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
       <CreatePost image={profileImage} render={() => render()}/>
+      <Promotion title="New Social Event" slogan="Try Once, get popular forever" href="https://example.com/social-event.html" innerText="Social Event Example" />
       <section className="profilePosts">{ profilePosts }</section>
       { loginRedir }
     </div>
@@ -81,3 +83,4 @@ const Profile = () => {
 }
 
 export default Profile;
+
