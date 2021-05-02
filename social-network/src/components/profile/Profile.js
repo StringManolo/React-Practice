@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 import ProfileInfo from "./ProfileInfo";
+import CreatePost from "./CreatePost";
 
 const Profile = () => {
   const [ profileTitle, setProfileTitle ] = useState("");
@@ -63,6 +64,7 @@ const Profile = () => {
         <Link to="/logout" className="profileLink logoutLink">Logout</Link>
       </nav>
       <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
+      <CreatePost image={profileImage} />
       <section className="profilePosts">{ profilePosts }</section>
       { loginRedir }
     </div>

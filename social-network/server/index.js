@@ -32,8 +32,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: false
-  }
-}));
+  }                                                                    }));
 app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
@@ -124,7 +123,14 @@ console.log("req.body.email: " + req.body.email);
             console.log("Not found email, creating...");
             const acc = {
               email: req.body.email, //TODO: hash password
-              password: req.body.password
+              password: req.body.password,
+              image: "/favicon.ico",
+              followers: [ "stringmanolo" ],
+              following: [ "stringmanolo" ],
+              posts: [
+                "First Post",
+                "Second Post"
+              ]
             };
             dbo.collection(collection).insertOne(acc);
             res.send(JSON.stringify({ result: true }));
@@ -197,22 +203,35 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/profile", (req, res) => {
-  //if (req.session.email) {
   if (req.session.email) {
-    const userData = {
-    /* dummy, req from db instead. getUserData() */
-      email: "username@gmail.com",
-      image: "/favicon.ico",
-      followers: [ "paco", "antonio", "arturo" ],
-      following: [ "antonio" ],
-      posts: [
-        "Hello, this is my first post!",
-        "how are you?",
-        "my third post!!"
-      ]
-    }
-    res.send(JSON.stringify({ result: true, data: userData }));
+    insertDocumentIntoCollection(dbname, collection, dbo => {
+      dbo.collection(collection).findOne( { email: req.session.email }, (err, res2) => {
+        if (err) {
+          res.send(JSON.stringify({ result: false, error: "server error"}));
+          throw err;
+        } else {
+          const profileInfo = {
+            email: res2.email,
+            image: res2.image,
+            followers: res2.followers,
+            following: res2.following,
+            posts: res2.posts
+          };
+          res.send(JSON.stringify({ result: true, data: profileInfo }));
+        }
+      });
+    });
   } else {
-    res.send(JSON.stringify({ result: false, error: "unavailable"}));
+    res.send(JSON.stringify({ result: false, error: "no session/invalid"}));
   }
+});
+
+
+app.post("/profile", (req, res) => {
+  if (req.session.email) {
+    /* add post to db */
+    /* TODO: Test data security before insert */
+
+  }
+
 });

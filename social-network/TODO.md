@@ -2,6 +2,8 @@ Create TODO list ✅
 
 Create profile design ❌  
 
+Hidde components before fetch and show after ❌  
+
 Query profile data from MongoDB ❌  
 
 Start MongoDB from node ❌  
