@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const CreatePost = props => {
-  const [ inputValue, setInputValue ] = useState("")
+  const [ inputValue, setInputValue ] = useState("");
 
   const hSubmit = e => {
     e.preventDefault();
@@ -16,7 +16,11 @@ const CreatePost = props => {
     })
     .then( res => res.json())
     .then( data => {
-      alert(JSON.stringify(data, null, 2));
+      if (data.result === true) {
+        props.render();
+      } else {
+        alert(data.data.error || "Server error");
+      }
     })
     .catch( err => alert(err) );
 
@@ -28,7 +32,7 @@ const CreatePost = props => {
     <form onSubmit={hSubmit} className="createPost">
       <img className="smallProfileImage" src={props.image} alt="small user" />
       <input type="text" value={inputValue} onChange={hInputChange} /> 
-      <input type="button" value="Make Public" />
+      <input type="submit" value="Make Public" />
     </form>
   );
 }

@@ -1,14 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
-const MongoServer = require("mongodb").Server;
-const session = require("express-session");
+const MongoServer = require("mongodb").Server;                         const session = require("express-session");
 const multipart = require("express-parse-multipart");
 const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
-    switch(formData[i].name) {
-      case "email":
+    switch(formData[i].name) {                                               case "email":
         data.email = formData[i].data.toString();
       break;
 
@@ -18,9 +16,11 @@ const multipartToString = formData => {
 
       case "tos":
         data.tos = formData[i].data.toString();
+      break;
+
+      case "post":                                                             data.post = formData[i].data.toString();
     }
-  }
-  return (data.tos ? [data.email, data.password, data.tos] : [data.email, data.password]);
+  }                                                                      return [data.email, data.password, data.tos, data.post ];
 }
 
 /* Express middleware */
@@ -29,20 +29,19 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
   secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
-  saveUninitialized: false,
-  cookie: {
+  saveUninitialized: false,                                              cookie: {
     httpOnly: false
-  }                                                                    }));
-app.use(/* allow fetch from react in dev */ (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  }
+}));
+app.use(/* allow fetch from react in dev */ (req, res, next) => {        res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
   next();
-});
-
+});                                                                    
 /* Database global settings */
-const url = "mongodb://localhost:27017/";                              const dbname = "socialNetwork";
+const url = "mongodb://localhost:27017/";
+const dbname = "socialNetwork";
 const collection = "accounts";
 
 /* TODO: Add csfr token to react forms */
@@ -227,11 +226,29 @@ app.get("/profile", (req, res) => {
 });
 
 
-app.post("/profile", (req, res) => {
+app.post("/profile", multipart, (req, res) => {
   if (req.session.email) {
     /* add post to db */
-    /* TODO: Test data security before insert */
+    if (req.formData) {
+      req.post = multipartToString(req.formData)[3];
 
+      insertDocumentIntoCollection(dbname, collection, dbo => {
+        dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { posts: req.post } }, (err, res2) => {
+          if (err) {
+            res.send(JSON.stringify({ result: false, error: "server error"}));
+          } else {
+            res.send(JSON.stringify({ result: true }));
+          }
+
+        });
+      });
+
+    } else {
+      res.send(JSON.stringify({ result: false, error: "no mutipart \"post\" field found"}));
+    }
+
+  } else {
+    res.send(JSON.stringify({ result: false, error: "no session/invalid"}));
   }
 
 });

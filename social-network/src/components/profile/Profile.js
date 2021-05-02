@@ -12,8 +12,7 @@ const Profile = () => {
   const [ profileFollowing, setProfileFollowing ] = useState("");
   const [ loginRedir, setLoginRedir ] = useState("");
 
-
-  useEffect(() => {
+  const fetchProfile = () => {
     fetch("http://localhost:8000/profile", {
       method: "get",
       credentials: "include"
@@ -55,8 +54,18 @@ const Profile = () => {
       }
     })
     .catch( err => alert(err) );
+  }
+
+  /* Fetch only once */
+  useEffect(() => {
+    fetchProfile();
   }, []);
-	
+
+  /* Fetch again from child component (child update the database) */
+  const render = () => {
+    fetchProfile();
+  }
+
   return (
     <div className="profileDiv">
       <nav className="profileLinks">
@@ -64,7 +73,7 @@ const Profile = () => {
         <Link to="/logout" className="profileLink logoutLink">Logout</Link>
       </nav>
       <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
-      <CreatePost image={profileImage} />
+      <CreatePost image={profileImage} render={() => render()}/>
       <section className="profilePosts">{ profilePosts }</section>
       { loginRedir }
     </div>
