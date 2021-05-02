@@ -4,13 +4,15 @@ Create profile design ❌
 
 Hidde components before fetch and show after ❌  
 
-Query profile data from MongoDB ❌  
+Limit amount of data send to the server and database ❌  
+
+Query profile data from MongoDB ✅   
 
 Start MongoDB from node ❌  
 
 Test how server session is working with multiple browsers and tabs ❌  
 
-Evaluate change from express-session to JWT ❌  
+Evaluate change from express-session to JWT ✅   
 
 Evaluate change from express-session to Google OAUTH ❌  
 
@@ -33,6 +35,8 @@ Css the existing components ❌
 Responsive design ❌   
   
 Integrate the server in the repo and netlify prod build ❌  
+
+Host the React ./Build from same express instance as server.js ❌   
 
 Set BE url using props or Context API  ❌  
 
