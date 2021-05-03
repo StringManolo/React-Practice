@@ -1,6 +1,6 @@
 const ProfileInfo = props => {
   return (
-    <>
+    <div className="profileInfo">
       <h1 className="profileTitle">{props.profileTitle}</h1>
       <img className="profileImage" src={props.profileImage} alt="profile user" />
       <div className="profileFollowers">
@@ -11,7 +11,7 @@ const ProfileInfo = props => {
         <span className="profileFollowing text">Following</span>
 	<span className="profileFollowing number">{props.profileFollowing}</span>
       </div>
-    </>
+    </div>
   );
 }
 

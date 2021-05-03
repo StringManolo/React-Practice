@@ -73,9 +73,11 @@ const Profile = () => {
         <Link to="/home" className="profileLink homeLink">Home</Link>
         <Link to="/logout" className="profileLink logoutLink">Logout</Link>
       </nav>
-      <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
-      <CreatePost image={profileImage} render={() => render()}/>
-      <Promotion title="New Social Event" slogan="Try Once, get popular forever" href="https://example.com/social-event.html" innerText="Social Event Example" />
+      <div className="profileDiv flex">
+        <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
+        <CreatePost image={profileImage} render={() => render()}/>
+        <Promotion title="New Social Event" slogan="Try Once, get popular forever" href="https://example.com/social-event.html" innerText="Social Event Example" />
+      </div>
       <section className="profilePosts">{ profilePosts }</section>
       { loginRedir }
     </div>

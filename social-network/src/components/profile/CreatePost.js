@@ -31,8 +31,8 @@ const CreatePost = props => {
   return (
     <form onSubmit={hSubmit} className="createPost">
       <img className="smallProfileImage" src={props.image} alt="small user" />
-      <input type="text" value={inputValue} onChange={hInputChange} /> 
-      <input type="submit" value="Make Public" />
+      <input className="createPost input" type="text" value={inputValue} onChange={hInputChange} /> 
+      <input className="createPost button" type="submit" value="Make Public" />
     </form>
   );
 }

@@ -2,6 +2,8 @@ Create TODO list ✅
 
 Create profile design ❌  
 
+Fetch promotion from BE to fill Promotion component ❌  
+
 Hidde components before fetch and show after ❌  
 
 Limit amount of data send to the server and database ❌  
