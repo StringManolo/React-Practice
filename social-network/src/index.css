@@ -7,6 +7,7 @@
   --login-width: 150px;
   --signin-width: 150px;
   --home-width: 450px;
+  --profile-width: 150px;
   --forgot-password-width: 150px;
   --center: 0 auto;
 }
@@ -35,7 +36,7 @@ body {
   width: 224px;
   font-size: 4em;
   /* border: 3px solid black; */
-  margin: var(--center);;
+  margin: var(--center);
   padding-top: 20%;
   padding-bottom: 6%;
   color: var(--color1);
@@ -86,17 +87,17 @@ body {
 
 
 /* components/forgotPassword/ForgotPassword.js */
-/*
+
 .forgotPasswordTitle {
   color: var(--color1);
   margin: var(--center);
-  width: calc( var(--forgot-password-width) - 50px - 10px );
+  width: calc( var(--forgot-password-width) - 10px - 10px);
   margin-bottom: 10px;
 }
 
 .form.formforgotPassword {
   border: 1px solid var(--color2);
-  width: var(--signin-width);
+  width: var(--forgot-password-width);
   margin: var(--center);
 }
 
@@ -105,47 +106,27 @@ body {
 }
 
 .forgotPasswordEmail {
-
-}
-
-.forgotPasswordLabel {
-
-}
-
-.forgotPasswordPassword {
-
+  display: block;
+  border: var(--no-border);
+  border-bottom: 1px solid var(--color2);
+  color: var(--color1);
+  width: calc( var(--forgot-password-width) - 20px );
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
 }
 
 .forgotPasswordSubmit {
-
-}
-*/
-
-
-
-
-/* components/home/Home.js */ 
-/*
-.homeDiv {
-
+  display: block;
+  background-color: #fff;
+  border: var(--no-border);
+  border-top: 1px solid var(--color2);
+  color: var(--color1);
+  margin: var(--center);
+  width: var(--signin-width);
+  outline: none;
 }
 
-.homeTitle {
-
-}
-
-.homeLinks {
-
-}
-
-.homeLink.loginLink {
-
-}
-
-.homeLink.siginLink {
-
-}
-*/
 
 
 
@@ -270,21 +251,31 @@ body {
 
 
 /* components/profile/Profile.js */
-/*
+
 .profileDiv {
 
 }
 
 .profileLinks {
-
+  display: block;
+  /*border-bottom: 1px solid var(--color2);*/
+  background-color: var(--color2);
+  color: var(--color1);
+  width: 100%;
 }
 
 .profileLink.homeLink {
-
+  display: inline-block;
+  margin-left: 30px;
+  text-decoration: none;
+  color: var(--color1);
 }
 
 .profileLink.logoutLink {
-
+  display: inline-block;
+  margin-left: 30px;
+  text-decoration: none;
+  color: var(--color1);
 }
 
 .profileDiv.flex {
@@ -294,7 +285,7 @@ body {
 .profilePosts {
 
 }
-*/
+
 
 
 
