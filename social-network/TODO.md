@@ -35,6 +35,8 @@ Implement password hashing (argondi) ❌
 Implement rols (admin, mod, user, nonLogged) ❌   
   
 Css the existing components ❌  
+
+Add cool backgrounds ❌  
   
 Responsive design ❌   
   
