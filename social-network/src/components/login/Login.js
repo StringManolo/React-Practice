@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 const Login = () => {
-  const [ emailValue, setEmail ] = useState("example@gmail.com");
-  const [ passwordValue, setPassword ] = useState("123");
+  const [ emailValue, setEmail ] = useState("");
+  const [ passwordValue, setPassword ] = useState("");
   const [ redir, setRedir ] = useState("");
 
   const hSubmit = e => {
@@ -38,20 +38,20 @@ const Login = () => {
 
   return (
     <>
-      <h1 className="loginTitle">Account Login</h1>
+      <h1 className="loginTitle">Login</h1>
       <form onSubmit={hSubmit} className="form formLogin">
         <label className="loginLabel">
-          Email:&nbsp;
-          <input type="email" className="loginEmail" value={emailValue} onChange={hEmailChange} />
+          <input type="email" className="loginEmail" placeholder="              email:" value={emailValue} onChange={hEmailChange} />
         </label>
         <label className="loginLabel">
-          Password:&nbsp;
-          <input type="password" className="loginPassword" value={passwordValue} onChange={hPasswordChange} />
+          <input type="password" className="loginPassword" placeholder="              pass:" value={passwordValue} onChange={hPasswordChange} />
         </label>
-	<Link to="/sigin" className="formLogin siginLink">Create New Account ?</Link>
-	<Link to="/forgotPassword" className="formLogin forgotPasswordLink">Forgot Password ?</Link>
         <input type="submit" className="loginSubmit" value="submit" />
       </form>
+      <div className="loginLinks">
+        <Link to="/signin" className="formLogin signinLink">Create New Account ?</Link>
+        <Link to="/forgotPassword" className="formLogin forgotPasswordLink">Forgot Password ?</Link>
+      </div>
       { redir }
     </>
   )

@@ -2,6 +2,8 @@ Create TODO list ✅
 
 Create profile design ❌  
 
+Use id to profile urls, when url, load from db ❌
+
 Fetch promotion from BE to fill Promotion component ❌  
 
 Hidde components before fetch and show after ❌  

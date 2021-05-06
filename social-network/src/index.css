@@ -1,240 +1,405 @@
+/* global css */
+:root {
+  --color1: #3474a2;
+  --color2: #ffe0d0;
+  --color3: #cb8b5d;
+  --no-border: 0 solid #fff;
+  --login-width: 150px;
+  --signin-width: 150px;
+  --center: 0 auto;
+}
+
 body {
   margin: 0;
   width: 100%;
   height: 100%;
   text-align: middle;
+  text-size-adjust: none; /* Fix Android Big Text */
+  text-rendering: optimizeLegibility; /* Improve text */
 }
 
-.formLogin.siginLink {
-  display: block;
-}
 
-.homeLink.loginLink, .homeLink.siginLink {
-  display: inline-block;
-}
 
+
+
+
+/* components/home/Home.js */
+/*
 .homeDiv {
-  margin: 12px;
-  background-color: #ffb544;
+
 }
 
 .homeTitle {
-  width: 224px;
-  font-size: 4em;
-  /* border: 3px solid black; */
-  margin: 0 auto;
-  padding-top: 20%;
-  padding-bottom: 6%;
+
 }
 
 .homeLinks {
-  display: flex;
-  justify-content: space-between;
+
 }
 
 .homeLink.loginLink {
-  width: 160px;
-  background-color: #fff;
-  color: #000;
-  border-top: 2px solid black;
-  border-right: 1px solid black;
-  border-bottom: 0;
-  border-left: 0;
-  padding-left: 12px;
-  font-size: 3.2em;
-  text-align: middle;
-  text-decoration: none;
-  font-weight: bold;
-  padding-top: 5px;
-  padding-bottom: 4px;
+
+}
+
+.homeLink.signinLink {
+
+}
+*/
+
+
+
+
+/* components/forgotPassword/ForgotPassword.js */
+/*
+.forgotPasswordTitle {
+
+}
+
+.form.formforgotPassword {
+
+}
+
+.forgotPasswordLabel {
+
+}
+
+.forgotPasswordEmail {
+
+}
+
+.forgotPasswordLabel {
+
+}
+
+.forgotPasswordPassword {
+
+}
+
+.forgotPasswordSubmit {
+
+}
+*/
+
+
+
+
+/* components/home/Home.js */ 
+/*
+.homeDiv {
+
+}
+
+.homeTitle {
+
+}
+
+.homeLinks {
+
+}
+
+.homeLink.loginLink {
+
 }
 
 .homeLink.siginLink {
-  width: 155px;
-  background-color: #fff;
-  color: #000;
-  border-top: 2px solid black;
-  border-right: 0;
-  border-bottom: 0;
-  border-left: 1px solid black;
-  font-size: 3.2em;
-  text-align: right;
-  text-decoration: none;
-  font-weight: bold;
-  padding-top: 5px;
-  padding-right: 12px;
-  padding-bottom: 4px;
-}
 
-.formLogin.siginLink {
-  margin-left: 1px;
 }
-
-.formLogin.forgotPasswordLink, .formSigin.loginLink {
-  display: inline-block;
-  margin-left: 1px;
-}
+*/
 
 
-.form.formSigin, .form.formLogin {
-  width: 280px;
-  background-color: #ffb544;
-  border: 2px solid black;
-  padding: 4px;
-  margin: 0 auto;
-}
 
-.siginLabel, .loginLabel {
-  display: block;
-  margin-bottom: 4px;
-}
 
-.siginTitle {
-  width: 285px;
-  margin: 0 auto;
-}
+/* components/login/Login.js */
 
 .loginTitle {
-  width: 232px;
-  margin: 0 auto;
+  color: var(--color1);
+  margin: var(--center);
+  width: calc( var(--login-width) - 50px - 10px );
+  margin-bottom: 10px;
 }
 
-.siginPassword, .siginEmail, .loginEmail, .loginPassword {
-  width: 275px;
+.form.formLogin {
+  border: 1px solid var(--color2);
+  width: var(--login-width);
+  margin: var(--center);
 }
 
-.siginSubmit {
-  margin-left: 25px;
-  background-color: #fff;
+.loginLabel {
+
+}
+
+.loginEmail {
+  display: block;
+  border: var(--no-border);
+  border-bottom: 1px solid var(--color2);
+  color: var(--color1);
+  width: calc( var(--login-width) - 20px );
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
+}
+
+.loginPassword {
+  display: block;
+  border: var(--no-border);
+  border-bottom: 1px solid var(--color2);
+  color: var(--color1);
+  width: calc( var(--login-width) - 20px );
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: var(--center);
+  outline: none;
+}
+
+.loginLinks {
+  margin: var(--center);
+  margin-top: 10px;
+  width: 180px;
+}
+
+.formLogin.signinLink {
+  display: inline-block;
+  color: var(--color1);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.formLogin.forgotPasswordLink {
+  display: inline-block;
+  color: var(--color1);
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .loginSubmit {
-  margin-left: 83px;
+  display: block;
   background-color: #fff;
+  border: var(--no-border);
+  color: var(--color1);
+  margin: var(--center);
+  width: var(--login-width);
+  outline: none;
 }
 
 
+
+
+/* components/logout/Logout.js */
+/*
+.logoutDiv {
+
+}
+
+.logoutTitle {
+
+}
+
+.logoutLinks {
+
+}
+
+.logoutLink.homeLink {
+
+}
+*/
+
+
+
+
+/* components/profile/CreatePost.js */
+/*
+.createPost {
+
+}
+
+.smallProfileImage {
+
+}
+
+.createPost.input {
+
+}
+
+.createPost.button {
+
+}
+*/
+
+
+
+
+/* components/profile/Profile.js */
+/*
 .profileDiv {
-  background-color: #f2f2f2;
-}
-
-.profileTitle {
 
 }
 
 .profileLinks {
-  background-color: #d65a4a;
-  color: #fff;
+
 }
 
-.profileLink.homeLink, .profileLink.logoutLink {
-  display: inline-block;
-  margin-left: 30px;
-  color: #fff;
-  text-decoration: none;
+.profileLink.homeLink {
+
+}
+
+.profileLink.logoutLink {
+
+}
+
+.profileDiv.flex {
+
 }
 
 .profilePosts {
-  width: 40%;
-  margin: 0 auto;
-  padding: 8px 2px 8px 2px;
-  background-color: #fff;
+
 }
-
-.profilePost {
-  border-bottom: 2px solid #e86;
-}
+*/
 
 
+
+
+/* components/profile/ProfileInfo.js */ 
+/*
 .profileInfo {
-  background-color: #fff;
-  margin-left: 14px;
-  text-align: center;
-  width: 150px;
-  padding: 6px;
-}
 
-
-.profileDiv.flex {
-  display: flex;
-  margin-top: 28px;
-}
-
-.profileTitle, 
-.profileImage, 
-.profileFollowers,
-.profileFollowers.text,
-.profileFollowers.number,
-.profileFollowing,
-.profileFollowing.text,
-.profileFollowing.number {
-  margin: 2px auto 2px 0;
 }
 
 .profileTitle {
-  font-weight: bold;
+
 }
 
 .profileImage {
-  border-radius: 50%;
+
 }
 
 .profileFollowers {
-  border-top: 1px solid black
+
 }
 
 .profileFollowers.text {
-  display: block;
-  font-size: 1.2em;
+
 }
 
 .profileFollowers.number {
-  font-weight: bold;
-  font-size: 1.3em;
+
+}
+*/
+
+
+
+
+/* components/profile/Promotion.js */
+/*
+.profilePromotion {
+
 }
 
-.profileFollowing {
-  border-top: 1px solid black;
+.profilePromotion.title {
+
 }
 
-.profileFollowing.text {
+.profilePromotion.slogan {
+
+}
+
+.profilePromotion.url {
+
+}
+*/
+
+
+
+
+/* components/signin/Signin.js */
+
+.signinTitle {
+  color: var(--color1);
+  margin: var(--center);
+  width: calc( var(--signin-width) - 25px - 10px );
+  margin-bottom: 10px;
+}
+
+.form.formSignin {
+  border: 1px solid var(--color2);
+  width: var(--signin-width);
+  margin: var(--center);
+}
+
+.signinCheckbox {
+  display: none;
+}
+
+.signinLabel {
+  width: 200px;
+  margin: var(--center);
+  font-size: 0.8em;
+  color: var(--color1);
+}
+
+.signinLabel span {
+  height: 16px;
+  width: 16px;
+  display: inline;
+  position: relative;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: var(--no-border);
+}
+
+.siginLabel center {
+  margin: var(--center);
+  width: 120px;
+  display: inline;
+}
+
+.signinLabel > [type=checkbox]:checked + span:before {
+  content: "\2714";
+  position: absolute;
+  top: -2px;
+  left: 1px;
+}
+
+.signinEmail {
   display: block;
-  font-size: 1.2em;
+  border: var(--no-border);
+  border-bottom: 1px solid var(--color2);
+  color: var(--color1);
+  width: calc( var(--signin-width) - 20px );
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
 }
 
-.profileFollowing.number {
+.signinPassword {
+  display: block;
+  border: var(--no-border);
+  border-bottom: 1px solid var(--color2);
+  color: var(--color1);
+  width: calc( var(--signin-width) - 20px );
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: var(--center);
+  outline: none;
+}
+
+.formSignin.loginLink {
+  margin: var(--center);
+  margin-top: 10px;
+  width: 210px;
+  display: block;
+  color: var(--color1);
   font-weight: bold;
-  font-size: 1.3em;
+  text-decoration: none;
 }
 
-
-.createPost {
+.signinSubmit {
+  display: block;
   background-color: #fff;
-  border-top: 1px solid #d65a4a;
-  padding: 6px;
-  margin-left: 14px;
-  display: block;
+  border: var(--no-border);
+  border-top: 1px solid var(--color2);
+  color: var(--color1);
+  margin: var(--center);
+  width: var(--signin-width);
+  outline: none;
 }
-
-.smallProfileImage {
-  width: 35px;
-  height: auto;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.createPost.input {
-  margin-left: 10px;
-  display: inline;
-  width: 70px;
-}
-
-.createPost.button {
-  background-color: #d65a4a;
-  color: #fff;
-  display: inline;
-  width: 100px;
-}
-
-
 

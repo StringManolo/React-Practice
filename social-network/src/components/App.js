@@ -1,7 +1,7 @@
 import { Route, Switch } from "react-router-dom";
 
 import Login from "./login/Login.js";
-import Sigin from "./sigin/Sigin.js";
+import Signin from "./signin/Signin.js";
 import Home from "./home/Home.js";
 import NotFound from "./errorPages/NotFound.js";
 import Profile from "./profile/Profile.js";
@@ -15,7 +15,7 @@ const App = () => (
       <Route path="/" component={Home} exact />
       <Route path="/home" component={Home} />
       <Route path="/login" component={Login} />
-      <Route path="/sigin" component={Sigin} />
+      <Route path="/signin" component={Signin} />
       <Route path="/profile" component={Profile} />
       <Route path="/logout" component={Logout} />
       <Route path="/forgotPassword" component={ForgotPassword} />

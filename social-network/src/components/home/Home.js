@@ -5,7 +5,7 @@ const Home = () => (
     <h1 className="homeTitle">SNRPG</h1>
     <nav className="homeLinks">
       <Link to="/login" className="homeLink loginLink">Login</Link>
-      <Link to="/sigin" className="homeLink siginLink">Sigin</Link>
+      <Link to="/signin" className="homeLink signinLink">Sigin</Link>
     </nav>
   </div>
 )
