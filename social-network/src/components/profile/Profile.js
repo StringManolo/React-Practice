@@ -76,9 +76,9 @@ const Profile = () => {
       <div className="profileDiv flex">
         <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
         <CreatePost image={profileImage} render={() => render()}/>
+	<section className="profilePosts">{ profilePosts }</section>
         <Promotion title="New Social Event" slogan="Try Once, get popular forever" href="https://example.com/social-event.html" innerText="Social Event Example" />
       </div>
-      <section className="profilePosts">{ profilePosts }</section>
       { loginRedir }
     </div>
   ) 

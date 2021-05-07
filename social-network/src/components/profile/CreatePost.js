@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 const CreatePost = props => {
-  const [ inputValue, setInputValue ] = useState("");
+  const [ textareaValue, setTextareaValue ] = useState("");
 
   const hSubmit = e => {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append("post", inputValue);
+    formData.append("post", textareaValue);
 
     fetch("http://localhost:8000/profile", {
       method: "post",
@@ -18,6 +18,7 @@ const CreatePost = props => {
     .then( data => {
       if (data.result === true) {
         props.render();
+	setTextareaValue("");
       } else {
         alert(data.data.error || "Server error");
       }
@@ -26,12 +27,12 @@ const CreatePost = props => {
 
   }
 
-  const hInputChange = e => setInputValue(e.target.value); 
+  const hTextareaChange = e => setTextareaValue(e.target.value); 
 
   return (
     <form onSubmit={hSubmit} className="createPost">
       <img className="smallProfileImage" src={props.image} alt="small user" />
-      <input className="createPost input" type="text" value={inputValue} onChange={hInputChange} /> 
+      <textarea className="createPost textarea" placeholder=" New Post..." value={textareaValue} onChange={hTextareaChange} /> 
       <input className="createPost button" type="submit" value="Make Public" />
     </form>
   );
