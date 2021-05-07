@@ -1,35 +1,36 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
-const MongoServer = require("mongodb").Server;                         const session = require("express-session");
+const MongoServer = require("mongodb").Server;
+const session = require("express-session");
 const multipart = require("express-parse-multipart");
 const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
-    switch(formData[i].name) {                                               case "email":
+    switch(formData[i].name) {
+      case "email":
         data.email = formData[i].data.toString();
       break;
 
       case "password":
         data.password = formData[i].data.toString();
-      break;
-
+      break;                                                           
       case "tos":
         data.tos = formData[i].data.toString();
       break;
 
       case "post":                                                             data.post = formData[i].data.toString();
     }
-  }                                                                      return [data.email, data.password, data.tos, data.post ];
+  }
+  return [data.email, data.password, data.tos, data.post ];
 }
-
-/* Express middleware */
+                                                                       /* Express middleware */
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
   secret: '99RX-PWPE6CZA7Z-4',
-  resave: false,
-  saveUninitialized: false,                                              cookie: {
+  resave: false,                                                         saveUninitialized: false,
+  cookie: {
     httpOnly: false
   }
 }));
@@ -77,7 +78,7 @@ app.listen(8000, () => {
 app.get("/", (req, res) => {
   res.send(`Api endpoints:
     1 - GET      /
-    2 - POST     /sigin
+    2 - POST     /signin
     3 - POST     /forgotPassword
     4 - POST     /login
     5 - GET      /logout
@@ -85,7 +86,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.post("/sigin", multipart, (req, res) => {
+app.post("/signin", multipart, (req, res) => {
   if (!req.formData && (!req.body.email || !req.body.password || !req.body.tos)) {
     res.send(JSON.stringify({ result: false, error: "Missing email, password or tos"}));
 console.log("req.body.email: " + req.body.email);
