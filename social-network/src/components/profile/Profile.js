@@ -14,8 +14,20 @@ const Profile = () => {
   const [ loginRedir, setLoginRedir ] = useState("");
 
   const hPostDelete = e => {
-    alert("Not yet available");
-    //fetch(`http://localhost:8000/delete?$post{e.target.value}
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("deletePost", e.target.getAttribute("deleteId"));
+    fetch("http://localhost:8000/deletePost", {
+      method: "post",
+      credentials: "include",
+      body: formData
+    })
+    .then( res => res.json())
+    .then( data => {
+alert(JSON.stringify(data, null, 2));
+    })
+    .catch( err => alert(err) );
   }
 
   const fetchProfile = () => {
@@ -52,7 +64,9 @@ alert(JSON.stringify(data, null, 2));
                 <article className="profilePost">
 	        {availablePosts[i][0]}
 	        </article>
-	        <input type="button" onClick={hPostDelete} className="profilePost delete" value="X" deleteId={availablePosts[i][1]} />
+		<form onSubmit={hPostDelete} deleteId={availablePosts[i][1]}>
+	          <input type="submit" className="profilePost delete" value="X" />
+		</form>
 	      </>
             );
 

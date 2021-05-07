@@ -9,42 +9,39 @@ const multipartToString = formData => {
   for(let i in formData) {
     switch(formData[i].name) {
       case "email":
-        data.email = formData[i].data.toString();
-      break;
-
-      case "password":
+        data.email = formData[i].data.toString();                            break;                                                                                                                                        case "password":
         data.password = formData[i].data.toString();
       break;
 
       case "tos":
-        data.tos = formData[i].data.toString();                              break;
-
+        data.tos = formData[i].data.toString();
+      break;                                                           
       case "post":
         data.post = formData[i].data.toString();
-    }
-  }
-  return [data.email, data.password, data.tos, data.post ];
-}
+
+      case "deletePost":
+        data.deletePost = formData[i].data.toString();
+    }                                                                    }
+  return [data.email, data.password, data.tos, data.post, data.deletePost ];                                                                  }
 
 /* Express middleware */
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(session({
+app.use(bodyParser.urlencoded({ extended: true }))                     app.use(session({
   secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: false
-  }
-}));
-app.use(/* allow fetch from react in dev */ (req, res, next) => {
+    httpOnly: false                                                      }                                                                    }));                                                                   app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                                                                         next();
-});                                                                    
+
+  next();
+});
+
 /* Database global settings */
-const url = "mongodb://localhost:27017/";                              const dbname = "socialNetwork";
+const url = "mongodb://localhost:27017/";
+const dbname = "socialNetwork";
 const collection = "accounts";
 
 /* TODO: Add csfr token to react forms */
@@ -231,10 +228,9 @@ app.get("/profile", (req, res) => {
 
 app.post("/profile", multipart, (req, res) => {
   if (req.session.email) {
-    /* add post to db */
     if (req.formData) {
       req.post = multipartToString(req.formData)[3];
-      let postId = 80;
+      let postId = 0;
 
       insertDocumentIntoCollection(dbname, collection, dbo => {
         dbo.collection(collection).findOne( { email: req.session.email }, (err, res2) => {
@@ -265,4 +261,15 @@ app.post("/profile", multipart, (req, res) => {
     res.send(JSON.stringify({ result: false, error: "no session/invalid"}));
   }
 
+});
+
+
+app.post("/deletePost", multipart, (req, res) => {
+  console.log("DELETING?");
+  if (req.session.email) {
+    if (req.formData) {
+      console.log(multipartToString(req.formData)[4]);
+      /* delete the array */
+    }
+  }
 });
