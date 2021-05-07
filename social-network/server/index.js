@@ -8,30 +8,37 @@ const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
     switch(formData[i].name) {
-      case "email":
-        data.email = formData[i].data.toString();                            break;                                                                                                                                        case "password":
-        data.password = formData[i].data.toString();
+      case "email":                                                            data.email = formData[i].data.toString();
       break;
+
+      case "password":
+        data.password = formData[i].data.toString();                         break;
 
       case "tos":
         data.tos = formData[i].data.toString();
-      break;                                                           
+      break;
+
       case "post":
         data.post = formData[i].data.toString();
 
       case "deletePost":
         data.deletePost = formData[i].data.toString();
-    }                                                                    }
-  return [data.email, data.password, data.tos, data.post, data.deletePost ];                                                                  }
+    }
+  }
+  return [data.email, data.password, data.tos, data.post, data.deletePost ];
+}
 
 /* Express middleware */
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }))                     app.use(session({
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({
   secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    httpOnly: false                                                      }                                                                    }));                                                                   app.use(/* allow fetch from react in dev */ (req, res, next) => {
+  cookie: {                                                                httpOnly: false
+  }
+}));
+app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -238,7 +245,7 @@ app.post("/profile", multipart, (req, res) => {
             res.send(JSON.stringify({ result: false, error: "server error"}));
             throw err;
           } else {
-            postId = res2.posts[res2.posts.length - 1][1];
+            postId = res2.posts.length ? res2.posts[res2.posts.length - 1][1] : 1;
 
             insertDocumentIntoCollection(dbname, collection, dbo => {
               dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { posts: [req.post, ++postId] } }, (err, res2) => {
@@ -268,8 +275,14 @@ app.post("/deletePost", multipart, (req, res) => {
   console.log("DELETING?");
   if (req.session.email) {
     if (req.formData) {
-      console.log(multipartToString(req.formData)[4]);
-      /* delete the array */
+      const deleteId = multipartToString(req.formData)[4];
+console.log(deleteId);
+      insertDocumentIntoCollection(dbname, collection, dbo => {
+        dbo.collection(collection).updateOne( { email: req.session.email }, { $pull: { posts: { $in: [ +deleteId ]  } }  }, (err, res2) => {
+          /* handle crashes and errors and send them trought api */
+          console.log("Done");
+        });
+      });
     }
   }
 });
