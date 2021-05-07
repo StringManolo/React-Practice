@@ -13,6 +13,11 @@ const Profile = () => {
   const [ profileFollowing, setProfileFollowing ] = useState("");
   const [ loginRedir, setLoginRedir ] = useState("");
 
+  const hPostDelete = e => {
+    alert("Not yet available");
+    //fetch(`http://localhost:8000/delete?$post{e.target.value}
+  }
+
   const fetchProfile = () => {
     fetch("http://localhost:8000/profile", {
       method: "get",
@@ -20,6 +25,7 @@ const Profile = () => {
     })
     .then( res => res.json())
     .then( data => {
+alert(JSON.stringify(data, null, 2));
       if (data.result === true) {
         if (data.data.email) {
           setProfileTitle(data.data.email.split("@")[0]);
@@ -42,9 +48,12 @@ const Profile = () => {
           const availablePosts = data.data.posts;
           for (let i in availablePosts) {
             posts.push(
-              <article className="profilePost">
-	      {availablePosts[i]}
-	      </article>
+	      <>
+                <article className="profilePost">
+	        {availablePosts[i][0]}
+	        </article>
+	        <input type="button" onClick={hPostDelete} className="profilePost delete" value="X" deleteId={availablePosts[i][1]} />
+	      </>
             );
 
           }
