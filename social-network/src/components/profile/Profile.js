@@ -25,7 +25,7 @@ const Profile = () => {
     })
     .then( res => res.json())
     .then( data => {
-alert(JSON.stringify(data, null, 2));
+      fetchProfile();
     })
     .catch( err => alert(err) );
   }
@@ -37,7 +37,6 @@ alert(JSON.stringify(data, null, 2));
     })
     .then( res => res.json())
     .then( data => {
-alert(JSON.stringify(data, null, 2));
       if (data.result === true) {
         if (data.data.email) {
           setProfileTitle(data.data.email.split("@")[0]);
@@ -80,9 +79,10 @@ alert(JSON.stringify(data, null, 2));
     .catch( err => alert(err) );
   }
 
-  /* Fetch only once */
+  /* Fetch only once *
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line
   }, []);
 
   /* Fetch again from child component (child update the database) */

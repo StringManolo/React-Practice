@@ -8,11 +8,13 @@ const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
     switch(formData[i].name) {
-      case "email":                                                            data.email = formData[i].data.toString();
+      case "email":
+        data.email = formData[i].data.toString();
       break;
 
       case "password":
-        data.password = formData[i].data.toString();                         break;
+        data.password = formData[i].data.toString();
+      break;
 
       case "tos":
         data.tos = formData[i].data.toString();
@@ -35,13 +37,13 @@ app.use(session({
   secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
   saveUninitialized: false,
-  cookie: {                                                                httpOnly: false
+  cookie: {
+    httpOnly: false
   }
 }));
 app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Credentials", true);                  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
   next();
 });
@@ -281,6 +283,7 @@ console.log(deleteId);
         dbo.collection(collection).updateOne( { email: req.session.email }, { $pull: { posts: { $in: [ +deleteId ]  } }  }, (err, res2) => {
           /* handle crashes and errors and send them trought api */
           console.log("Done");
+          res.send(JSON.stringify({ result: true }));
         });
       });
     }
