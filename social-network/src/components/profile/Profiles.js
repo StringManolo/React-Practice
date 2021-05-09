@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 import ProfileInfo from "./ProfileInfo";
-import CreatePost from "./CreatePost";
-import Promotion from "./Promotion";
 
-const Profile = () => {
+const Profiles = props => {
   const [ profileTitle, setProfileTitle ] = useState("");
   const [ profilePosts, setProfilePosts ] = useState("");
   const [ profileImage, setProfileImage ] = useState("");
@@ -13,25 +11,10 @@ const Profile = () => {
   const [ profileFollowing, setProfileFollowing ] = useState("");
   const [ loginRedir, setLoginRedir ] = useState("");
 
-  const hPostDelete = e => {
-    e.preventDefault();
 
-    let formData = new FormData();
-    formData.append("deletePost", e.target.getAttribute("deleteId"));
-    fetch("http://localhost:8000/deletePost", {
-      method: "post",
-      credentials: "include",
-      body: formData
-    })
-    .then( res => res.json())
-    .then( data => {
-      fetchProfile();
-    })
-    .catch( err => alert(err) );
-  }
-
+  const { id } = props.match.params;
   const fetchProfile = () => {
-    fetch("http://localhost:8000/profile", {
+    fetch(`http://localhost:8000/profiles/${id}`, {
       method: "get",
       credentials: "include"
     })
@@ -44,29 +27,26 @@ const Profile = () => {
 
         if (data.data.followers) {
           setProfileFollowers(data.data.followers.length);
-	}
+        }
 
-	if (data.data.following) {
+        if (data.data.following) {
           setProfileFollowing(data.data.following.length);
         }
-  
-	if (data.data.image) {
+
+        if (data.data.image) {
           setProfileImage(data.data.image);
-	}
-		
+        }
+
         if (data.data.posts) {
           let posts = [];
           const availablePosts = data.data.posts;
           for (let i in availablePosts) {
             posts.push(
-	      <>
+              <>
                 <article className="profilePost">
-	        {availablePosts[i][0]}
-	        </article>
-		<form onSubmit={hPostDelete} deleteId={availablePosts[i][1]}>
-	          <input type="submit" className="profilePost delete" value="X" />
-		</form>
-	      </>
+                {availablePosts[i][0]}
+                </article>
+              </>
             );
 
           }
@@ -82,12 +62,9 @@ const Profile = () => {
   /* Fetch only once */
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, []); 
 
-  /* Fetch again from child component (child update the database) */
-  const render = () => {
-    fetchProfile();
-  }
+
 
   return (
     <div className="profileDiv">
@@ -97,14 +74,13 @@ const Profile = () => {
       </nav>
       <div className="profileDiv flex">
         <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
-        <CreatePost image={profileImage} render={() => render()}/>
-	<section className="profilePosts">{ profilePosts }</section>
-        <Promotion title="New Social Event" slogan="Try Once, get popular forever" href="https://example.com/social-event.html" innerText="Social Event Example" />
+        <section className="profilePosts">{ profilePosts }</section>
       </div>
       { loginRedir }
     </div>
-  ) 
+  )
+
 }
 
-export default Profile;
+export default Profiles;
 
