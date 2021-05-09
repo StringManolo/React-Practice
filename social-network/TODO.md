@@ -4,7 +4,11 @@ Replace _ by other simbol in profiles/ path ❌
 
 Allow to mention other users or comment in other profiles ❌  
 
-Create profile design ❌  
+Create profile design ❌
+
+Add social events component ❌  
+
+List of deleted posts and option to repost/recover ❌  
 
 Add private messages ❌  
 

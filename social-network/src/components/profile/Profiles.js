@@ -53,7 +53,11 @@ const Profiles = props => {
           setProfilePosts(posts);
         }
       } else {
-        setLoginRedir(<Redirect push to={{ pathname: "/login"}} />);
+	if (data.error === "incomplete profile in database") {
+          alert("Profile data is corrupted. Unavailable");
+	} else {
+          setLoginRedir(<Redirect push to={{ pathname: "/login"}} />);
+	}
       }
     })
     .catch( err => alert(err) );

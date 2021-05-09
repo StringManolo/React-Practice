@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
 import CreatePost from "./CreatePost";
 import Promotion from "./Promotion";
+import Posts from "./Posts";
 
 const Profile = () => {
   const [ profileTitle, setProfileTitle ] = useState("");
@@ -58,50 +59,10 @@ const Profile = () => {
           setProfileImage(data.data.image);
 	}
 	
-	/* Add posts and replies to the component */
-	/* TODO: Maybe create a posts component ? */
         if (data.data.posts) {
-          let posts = [];
-          const availablePosts = data.data.posts;
-          for (let i in availablePosts) {
-	    let replies = [];
-	    if (availablePosts[i][2] && availablePosts[i][2].length) {
-              for(let j in availablePosts[i][2]) {
-		const userName = availablePosts[i][2][j][1].split("@")[0];
-		availablePosts[i][2][j][1] = availablePosts[i][2][j][1].replace("@", "+");
-		const userProfile = `/profiles/${availablePosts[i][2][j][1]}`;
-                replies.push(
-                  <>
-                    <div className="profilePost reply">
-		      Reply: {availablePosts[i][2][j][0]} 
-		    </div>
-		    <div className="profilePost name">
-		      By: <Link to={userProfile} className="profileLink userLink">{userName}</Link>
-		    </div>
-	          </>
-		)
-	      }
-	    } else {
-
-	    }
-
-            posts.push(
-	      <>
-                <article className="profilePost" onClick={ e => openReply(e) } >
-	          {availablePosts[i][0]}
-	        </article>
-		{!!replies.length && <article className="profilePost replies">
-		  {replies}
-		</article> }
-		<form onSubmit={hPostDelete} deleteId={availablePosts[i][1]}>
-	          <input type="submit" className="profilePost delete" value="X" />
-	        </form>
-	      </>
-            );
-
-          }
-          setProfilePosts(posts);
+	  setProfilePosts(<Posts posts={data.data.posts} hPostDelete={hPostDelete} openReply={openReply}/>);
         }
+
       } else {
         setLoginRedir(<Redirect push to={{ pathname: "/login"}} />);
       }
@@ -128,7 +89,9 @@ const Profile = () => {
       <div className="profileDiv flex">
         <ProfileInfo profileTitle={profileTitle} profileImage={profileImage} profileFollowers={profileFollowers} profileFollowing={profileFollowing} />
         <CreatePost image={profileImage} render={() => render()}/>
-	<section className="profilePosts">{ profilePosts }</section>
+	<section className="profilePosts">
+	  { profilePosts }
+        </section>
         <Promotion title="New Social Event" slogan="Try Once, get popular forever" href="https://example.com/social-event.html" innerText="Social Event Example" />
       </div>
       { loginRedir }
