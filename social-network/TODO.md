@@ -6,6 +6,10 @@ Allow to mention other users or comment in other profiles ❌
 
 Create profile design ❌
 
+CSS posts component ❌ 
+
+Add textarea onClick to reply posts ❌   
+
 Add social events component ❌  
 
 List of deleted posts and option to repost/recover ❌  
