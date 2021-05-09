@@ -1,5 +1,9 @@
 Create TODO list ✅  
 
+Replace _ by other simbol in profiles/ path ❌    
+
+Allow to mention other users or comment in other profiles ❌  
+
 Create profile design ❌  
 
 Use id to profile urls, when url, load from db ❌
