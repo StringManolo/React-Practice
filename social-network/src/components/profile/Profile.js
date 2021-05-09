@@ -30,6 +30,10 @@ const Profile = () => {
     .catch( err => alert(err) );
   }
 
+  const openReply = e => {
+    alert("Append textarea to reply");
+  }
+
   const fetchProfile = () => {
     fetch("http://localhost:8000/profile", {
       method: "get",
@@ -53,19 +57,45 @@ const Profile = () => {
 	if (data.data.image) {
           setProfileImage(data.data.image);
 	}
-		
+	
+	/* Add posts and replies to the component */
+	/* TODO: Maybe create a posts component ? */
         if (data.data.posts) {
           let posts = [];
           const availablePosts = data.data.posts;
           for (let i in availablePosts) {
+	    let replies = [];
+	    if (availablePosts[i][2] && availablePosts[i][2].length) {
+              for(let j in availablePosts[i][2]) {
+		const userName = availablePosts[i][2][j][1].split("@")[0];
+		availablePosts[i][2][j][1] = availablePosts[i][2][j][1].replace("@", "+");
+		const userProfile = `/profiles/${availablePosts[i][2][j][1]}`;
+                replies.push(
+                  <>
+                    <div className="profilePost reply">
+		      Reply: {availablePosts[i][2][j][0]} 
+		    </div>
+		    <div className="profilePost name">
+		      By: <Link to={userProfile} className="profileLink userLink">{userName}</Link>
+		    </div>
+	          </>
+		)
+	      }
+	    } else {
+
+	    }
+
             posts.push(
 	      <>
-                <article className="profilePost">
-	        {availablePosts[i][0]}
+                <article className="profilePost" onClick={ e => openReply(e) } >
+	          {availablePosts[i][0]}
 	        </article>
+		{!!replies.length && <article className="profilePost replies">
+		  {replies}
+		</article> }
 		<form onSubmit={hPostDelete} deleteId={availablePosts[i][1]}>
 	          <input type="submit" className="profilePost delete" value="X" />
-		</form>
+	        </form>
 	      </>
             );
 

@@ -2,8 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const MongoServer = require("mongodb").Server;
-const session = require("express-session");
-const multipart = require("express-parse-multipart");
+const session = require("express-session");                            const multipart = require("express-parse-multipart");
 const multipartToString = formData => {
   let data = {};
   for(let i in formData) {
@@ -14,30 +13,29 @@ const multipartToString = formData => {
 
       case "password":
         data.password = formData[i].data.toString();
-      break;
-
+      break;                                                           
       case "tos":
         data.tos = formData[i].data.toString();
       break;
 
       case "post":
         data.post = formData[i].data.toString();
-
-      case "deletePost":                                                       data.deletePost = formData[i].data.toString();
+                                                                             case "deletePost":
+        data.deletePost = formData[i].data.toString();
     }
   }
-  return [data.email, data.password, data.tos, data.post, data.deletePost ];
-}
+  return [data.email, data.password, data.tos, data.post, data.deletePost ];                                                                  }
 
 /* Express middleware */
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }))
+const app = express();                                                 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
   secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: false                                                      }                                                                    }));
+    httpOnly: false
+  }
+}));
 app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);                  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -126,6 +124,10 @@ console.log("req.body.email: " + req.body.email);
 
           if (!emailAlreadySigin) {
             console.log("Not found email, creating...");
+            const replies = [
+              ["Hello and welcome.", "strmanolo@gmail.com"],
+              ["Hi, i'm d1", "d1@gmail.com"]
+            ];
             const acc = {
               email: req.body.email, //TODO: hash password
               password: req.body.password,
@@ -133,7 +135,7 @@ console.log("req.body.email: " + req.body.email);
               followers: [ "stringmanolo" ],
               following: [ "stringmanolo" ],
               posts: [
-                ["Welcome!", 1]
+                ["Welcome!", 1, replies]
               ]
             };
             dbo.collection(collection).insertOne(acc);
@@ -290,8 +292,8 @@ console.log(deleteId);
 
 app.get("/profiles/:email", multipart, (req, res) => {
   if (req.session.email) {
-    while(/_/g.test(req.params.email)) {
-      req.params.email = req.params.email.replace(/_/g, "@");
+    while(/\+/g.test(req.params.email)) {
+      req.params.email = req.params.email.replace(/\+/g, "@");
     }
     insertDocumentIntoCollection(dbname, collection, dbo => {
       dbo.collection(collection).findOne( { email: req.params.email }, (err, res2) => {

@@ -6,6 +6,8 @@ Allow to mention other users or comment in other profiles ❌
 
 Create profile design ❌  
 
+Add private messages ❌  
+
 Use id to profile urls, when url, load from db ❌
 
 Fetch promotion from BE to fill Promotion component ❌  
@@ -44,7 +46,7 @@ Add cool backgrounds ❌
   
 Responsive design ❌   
   
-Integrate the server in the repo and netlify prod build ❌  
+Integrate the server in the repo and netlify prod build ❌   
 
 Host the React ./Build from same express instance as server.js ❌   
 
@@ -67,6 +69,8 @@ Remove dev/debug code ❌
 Catch unexpected exceptions ❌  
 
 Implement server login ❌  
+
+Upload to heroku ❌  
 
 Redesign everything ❌  
 
