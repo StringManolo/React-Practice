@@ -43,13 +43,13 @@ const Posts = props => {
 	</article>}
 
 	{displayStatus === true &&
-	<form onSubmit={props.openReply} postId={availablePosts[i][1]}>
-	  <textarea placeholder="Write your reply..."></textarea>
-	  <input type="submit" className="profilePost reply" value="Add Reply" />
+	<form onSubmit={props.openReply} className="profilePost replyForm" postId={availablePosts[i][1]}>
+	  <textarea className="profilePost replyTextarea"  placeholder="Write your reply..."></textarea>
+	  <input type="submit" className="profilePost replySubmit" value="Add Reply" />
 	</form>}
 
 	<form onSubmit={props.hPostDelete} deleteId={availablePosts[i][1]}>
-          <input type="submit" className="profilePost delete" value="X" />
+          <input type="submit" className="profilePost delete" value="Delete Post" />
         </form>
       </>
     );

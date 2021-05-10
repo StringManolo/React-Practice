@@ -503,13 +503,50 @@ body {
   margin-left: 8px;
 }
 
+.profilePost.replyForm {
+  margin-left: 8px;
+}
+
 .profilePost.reply {
 
+}
+
+.profilePost.replyTextarea {
+  display: block;
+  background-color: #fff;
+  color: var(--color1);
+  margin: var(--center);
+  width: calc(var(--signin-width) * 3);
+  outline: none;
+}
+
+.profilePost.replySubmit {
+  display: block;
+  background-color: #fff;
+  border: var(--no-border);
+  border-top: 1px solid var(--color2);
+  color: var(--color1);
+  margin: var(--center);
+  width: var(--signin-width);
+  outline: none;
+}
+
+.profilePost.delete {
+  display: block;
+  background-color: #fff;
+  border: var(--no-border);
+  border-top: 1px solid var(--color2);
+  color: var(--color1);
+  margin: var(--center);
+  width: var(--signin-width);
+  outline: none;
 }
 
 .profilePost.name {
   border-bottom: 3px solid #fff;
 }
+
+
 
 .profileLink.userLink {
   color: var(--color1);
