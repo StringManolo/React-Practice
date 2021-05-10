@@ -4,7 +4,11 @@ Replace _ by other simbol in profiles/ path ❌
 
 Allow to mention other users or comment in other profiles ❌  
 
+Option to upload images and or use url ❌  
+
 Create profile design ❌
+
+Make compatible multipartdata and urlencoded forms  ❌  
 
 CSS posts component ❌ 
 

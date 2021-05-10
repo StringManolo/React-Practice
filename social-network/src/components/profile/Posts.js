@@ -1,5 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
+
 const Posts = props => {
+  const [ displayStatus, setDisplayStatus ] = useState(false);
+  const toggleReply = e => {
+    setDisplayStatus(displayStatus === false ? true : false);
+  }
+
   let posts = [];
   const availablePosts = props.posts;
   for (let i in availablePosts) {
@@ -7,8 +15,7 @@ const Posts = props => {
     if (availablePosts[i][2] && availablePosts[i][2].length) {
       for(let j in availablePosts[i][2]) {
         const userName = availablePosts[i][2][j][1].split("@")[0];
-        availablePosts[i][2][j][1] = availablePosts[i][2][j][1].replace("@", "+");
-        const userProfile = `/profiles/${availablePosts[i][2][j][1]}`;
+        const userProfile = `/profiles/${availablePosts[i][2][j][1].replace("@", "+")}`;
         replies.push(
           <>
             <div className="profilePost reply">
@@ -26,7 +33,7 @@ const Posts = props => {
 
     posts.push(
       <>
-        <article className="profilePost" onClick={ e => props.openReply(e) } >
+        <article className="profilePost" onClick={toggleReply} >
           {availablePosts[i][0]}
         </article>
         
@@ -34,7 +41,13 @@ const Posts = props => {
 	<article className="profilePost replies">
 	  {replies}
 	</article>}
-        
+
+	{displayStatus === true &&
+	<form onSubmit={props.openReply} postId={availablePosts[i][1]}>
+	  <textarea placeholder="Write your reply..."></textarea>
+	  <input type="submit" className="profilePost reply" value="Add Reply" />
+	</form>}
+
 	<form onSubmit={props.hPostDelete} deleteId={availablePosts[i][1]}>
           <input type="submit" className="profilePost delete" value="X" />
         </form>

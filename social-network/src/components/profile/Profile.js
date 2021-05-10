@@ -30,9 +30,19 @@ const Profile = () => {
     })
     .catch( err => alert(err) );
   }
-
+	
   const openReply = e => {
-    alert("Append textarea to reply");
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("replied", e.target.getAttribute("postId"))
+    .append("text", e.target.value);
+	
+    fetch("http://localhost:8000/replyPost", {
+      method: "post",
+      credentials: "include",
+      body: formData
+    })
   }
 
   const fetchProfile = () => {
@@ -60,11 +70,13 @@ const Profile = () => {
 	}
 	
         if (data.data.posts) {
-	  setProfilePosts(<Posts posts={data.data.posts} hPostDelete={hPostDelete} openReply={openReply}/>);
+	  setProfilePosts(<Posts posts={data.data.posts} hPostDelete={hPostDelete} />);
         }
 
       } else {
-        setLoginRedir(<Redirect push to={{ pathname: "/login"}} />);
+        setLoginRedir(
+	  <Redirect push to={{ pathname: "/login"}} />
+	);
       }
     })
     .catch( err => alert(err) );
