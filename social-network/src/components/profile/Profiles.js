@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 import ProfileInfo from "./ProfileInfo";
+import Posts from "./Posts";
 
 const Profiles = props => {
   const [ profileTitle, setProfileTitle ] = useState("");
@@ -38,6 +39,10 @@ const Profiles = props => {
         }
 
         if (data.data.posts) {
+          setProfilePosts(<Posts posts={data.data.posts} />);
+        }
+	      
+        /*if (data.data.posts) {
           let posts = [];
           const availablePosts = data.data.posts;
           for (let i in availablePosts) {
@@ -51,7 +56,7 @@ const Profiles = props => {
 
           }
           setProfilePosts(posts);
-        }
+        }*/
       } else {
 	if (data.error === "incomplete profile in database") {
           alert("Profile data is corrupted. Unavailable");

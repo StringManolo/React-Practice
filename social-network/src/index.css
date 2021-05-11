@@ -516,7 +516,7 @@ body {
   background-color: #fff;
   color: var(--color1);
   margin: var(--center);
-  width: calc(var(--signin-width) * 3);
+  width: calc(var(--signin-width) * 2);
   outline: none;
 }
 

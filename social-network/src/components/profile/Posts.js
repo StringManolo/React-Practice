@@ -4,6 +4,12 @@ import { Link } from "react-router-dom";
 
 const Posts = props => {
   const [ displayStatus, setDisplayStatus ] = useState(false);
+  const [ textareaValue, setTextareaValue ] = useState();
+
+  const hTextareaValue = e => {
+    setTextareaValue(e.target.value);
+  }
+
   const toggleReply = e => {
     setDisplayStatus(displayStatus === false ? true : false);
   }
@@ -43,14 +49,14 @@ const Posts = props => {
 	</article>}
 
 	{displayStatus === true &&
-	<form onSubmit={props.openReply} className="profilePost replyForm" postId={availablePosts[i][1]}>
-	  <textarea className="profilePost replyTextarea"  placeholder="Write your reply..."></textarea>
+	<form onSubmit={props.openReply} className="profilePost replyForm" postId={availablePosts[i][1]} textareaValue={textareaValue}>
+	  <textarea className="profilePost replyTextarea" onChange={hTextareaValue} placeholder="Write your reply...">{textareaValue}</textarea>
 	  <input type="submit" className="profilePost replySubmit" value="Add Reply" />
 	</form>}
-
+        {props.del === true &&
 	<form onSubmit={props.hPostDelete} deleteId={availablePosts[i][1]}>
           <input type="submit" className="profilePost delete" value="Delete Post" />
-        </form>
+        </form>}
       </>
     );
 

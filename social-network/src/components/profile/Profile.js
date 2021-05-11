@@ -36,13 +36,20 @@ const Profile = () => {
 
     let formData = new FormData();
     formData.append("replied", e.target.getAttribute("postId"))
-    .append("text", e.target.value);
+    formData.append("text", e.target.getAttribute("textareaValue"));
+
 	
     fetch("http://localhost:8000/replyPost", {
       method: "post",
       credentials: "include",
       body: formData
     })
+    .then( res => res.json())
+    .then( data => {
+      fetchProfile();
+    })
+    .catch( err => alert(err) );
+    
   }
 
   const fetchProfile = () => {
@@ -70,7 +77,7 @@ const Profile = () => {
 	}
 	
         if (data.data.posts) {
-	  setProfilePosts(<Posts posts={data.data.posts} hPostDelete={hPostDelete} />);
+	  setProfilePosts(<Posts posts={data.data.posts} del={true} hPostDelete={hPostDelete} openReply={openReply}/>);
         }
 
       } else {
