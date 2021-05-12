@@ -8,6 +8,10 @@ Option to upload images and or use url ❌
 
 Create profile design ❌
 
+Replace Arrays By Objects in MongoDB ❌  
+
+Fix replies to work on eaxh post individualy ❌  
+
 Make compatible multipartdata and urlencoded forms  ❌  
 
 CSS posts component ❌ 

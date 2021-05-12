@@ -1,54 +1,35 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
-const MongoServer = require("mongodb").Server;
-const session = require("express-session");
-const multipart = require("express-parse-multipart");
-const multipartToString = formData => {
-  let data = {};
-  for(let i in formData) {
-    switch(formData[i].name) {
-      case "email":
-        data.email = formData[i].data.toString();
+const express = require("express");                                    const bodyParser = require("body-parser");
+const MongoClient = require("mongodb").MongoClient;                    const MongoServer = require("mongodb").Server;                         const session = require("express-session");
+const multipart = require("express-parse-multipart");                  const multipartToString = formData => {                                  let data = {};
+  for(let i in formData) {                                                 switch(formData[i].name) {
+      case "email":                                                            data.email = formData[i].data.toString();
+      break;                                                           
+      case "password":                                                         data.password = formData[i].data.toString();                         break;
+                                                                             case "tos":                                                              data.tos = formData[i].data.toString();
+      break;                                                           
+      case "post":                                                             data.post = formData[i].data.toString();
       break;
 
-      case "password":
-        data.password = formData[i].data.toString();
-      break;
-
-      case "tos":
-        data.tos = formData[i].data.toString();
-      break;
-
-      case "post":
-        data.post = formData[i].data.toString();
-      break;
-
-      case "deletePost":
-        data.deletePost = formData[i].data.toString();
+      case "deletePost":                                                       data.deletePost = formData[i].data.toString();
       break;
 
       case "replied":
-        data.replied = formData[i].data.toString();
-      break;
+        data.replied = formData[i].data.toString();                          break;
 
       case "text":
         data.text = formData[i].data.toString();
-      break;
-
+      break;                                                           
     }
-  }
-  return [data.email, data.password, data.tos, data.post, data.deletePost,  [data.replied, data.text]];
+  }                                                                      return [data.email, data.password, data.tos, data.post, data.deletePost,  [data.replied, data.text]];
 }
 
 /* Express middleware */
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(session({                                                                         secret: '99RX-PWPE6CZA7Z-4',
-  resave: false,
+const app = express();                                                 app.use(bodyParser.urlencoded({ extended: true }))                     app.use(session({
+  secret: '99RX-PWPE6CZA7Z-4',                                           resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: false                                                                       }
+    httpOnly: false
+  }
 }));
 app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -139,19 +120,34 @@ console.log("req.body.email: " + req.body.email);
 
           if (!emailAlreadySigin) {
             console.log("Not found email, creating...");
-            const replies = [
+            /* const replies = [
               ["Hello and welcome.", "strmanolo@gmail.com"],
               ["Hi, i'm d1", "d1@gmail.com"]
-            ];
+            ]; */
             const acc = {
               email: req.body.email, //TODO: hash password
               password: req.body.password,
               image: "/favicon.ico",
               followers: [ "stringmanolo" ],
               following: [ "stringmanolo" ],
-              posts: [
-                ["Welcome!", 1, replies]
-              ]
+              posts:
+                [
+                  {
+                    text: "Welcome!",
+                    id: 1,
+                    replies: [
+                      {
+                        text: "Hello and welcome.",
+                        author: "strmanolo@gmail.com"
+                      },
+                      {
+                        text: "Hi, i'm d1",
+                        author: "d1@gmail.com"
+                      }
+                    ]
+                  }
+                ]
+
             };
             dbo.collection(collection).insertOne(acc);
             res.send(JSON.stringify({ result: true }));
@@ -237,7 +233,7 @@ app.get("/profile", (req, res) => {
             followers: res2.followers,
             following: res2.following,
             posts: res2.posts,
-            postId: res2.postId
+            postId: res2.posts.id
           };
           res.send(JSON.stringify({ result: true, data: profileInfo }));
         }
@@ -261,12 +257,14 @@ app.post("/profile", multipart, (req, res) => {
             res.send(JSON.stringify({ result: false, error: "server error"}));
             throw err;
           } else {
-            postId = res2.posts.length ? res2.posts[res2.posts.length - 1][1] : 1;
+
+            postId = res2.posts.length ? res2.posts[res2.posts.length - 1].id : 1;
 
             insertDocumentIntoCollection(dbname, collection, dbo => {
-              dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { posts: [req.post, ++postId] } }, (err, res2) => {
+              dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { posts: { text: req.post, id: ++postId } } }, (err, res2) => {
                 if (err) {
                   res.send(JSON.stringify({ result: false, error: "server error"}));
+
                 } else {
                   res.send(JSON.stringify({ result: true }));
                 }
@@ -298,13 +296,19 @@ console.log(deleteId);
           /* handle crashes and errors and send them trought api */
           console.log("Done");
           res.send(JSON.stringify({ result: true }));
+
+/*
+  TODO: CHANGE ID?
+*/
+
+
         });
       });
     }
   }
 });
 
-
+/* TODO: CHANGE DB */
 app.get("/profiles/:email", multipart, (req, res) => {
   if (req.session.email) {
     while(/\+/g.test(req.params.email)) {
@@ -350,18 +354,24 @@ app.get("/profiles/:email", multipart, (req, res) => {
 
 });
 
+/*
 app.post("/replyPost", multipart, (req, res) => {
   if (req.session.email) {
     if (req.formData) {
       const [replyId, text] = multipartToString(req.formData)[5];
 
-    /*  insertDocumentIntoCollection(dbname, collection, dbo => {
-        dbo.collection(collection).updateOne( { email: req.session.email }, { $pull: { posts: { $in: [ +deleteId ]  } }  }, (err, res2) => {
-          //handle crashes and errors and send them trought api                             console.log("Done");
+      insertDocumentIntoCollection(dbname, collection, dbo => {
+        dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { "posts.$.[replyId].$.[3]": { $each: [text, "unknown user"] } } }, (err, res2) => {
+          if (err) {
+            console.log(`Err: ${err}`);
+            throw err;
+          }
+          console.log("Done");
           res.send(JSON.stringify({ result: true }));
-        }); */
-
+        });
+      });
     }
   }
 
 });
+*/

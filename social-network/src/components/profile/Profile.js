@@ -77,6 +77,9 @@ const Profile = () => {
 	}
 	
         if (data.data.posts) {
+alert(`data.data.posts:
+${JSON.stringify(data.data.posts, null, 2)}
+`);
 	  setProfilePosts(<Posts posts={data.data.posts} del={true} hPostDelete={hPostDelete} openReply={openReply}/>);
         }
 
