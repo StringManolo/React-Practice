@@ -2,10 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const MongoServer = require("mongodb").Server;
-const session = require("express-session");                                             const multipart = require("express-parse-multipart");
+const session = require("express-session");
+const multipart = require("express-parse-multipart");
 const multipartToString = formData => {
-  let data = {};                                                                          for(let i in formData) {
-    switch(formData[i].name) {                                                                case "email":
+  let data = {};
+  for(let i in formData) {
+    switch(formData[i].name) {
+      case "email":
         data.email = formData[i].data.toString();
       break;
 
@@ -18,14 +21,18 @@ const multipartToString = formData => {
       break;
 
       case "post":
-        data.post = formData[i].data.toString();                                              break;
+        data.post = formData[i].data.toString();
+      break;
 
       case "deletePost":
         data.deletePost = formData[i].data.toString();
-      break;                                                                            
+      break;
+
       case "replied":
-        data.replied = formData[i].data.toString();                                           break;
-                                                                                              case "text":
+        data.replied = formData[i].data.toString();
+      break;
+
+      case "text":
         data.text = formData[i].data.toString();
       break;
 
@@ -35,14 +42,17 @@ const multipartToString = formData => {
 }
 
 /* Express middleware */
-const app = express();                                                                  app.use(bodyParser.urlencoded({ extended: true }))
-app.use(session({                                                                         secret: '99RX-PWPE6CZA7Z-4',
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({
+  secret: '99RX-PWPE6CZA7Z-4',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: false                                                                       }
 }));
-app.use(/* allow fetch from react in dev */ (req, res, next) => {                         res.header("Access-Control-Allow-Origin", req.headers.origin);
+app.use(/* allow fetch from react in dev */ (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
@@ -377,7 +387,7 @@ app.post("/replyPost", multipart, (req, res) => {
           { posts: { $elemMatch: {id: +replyId} } }
         ] },
 
-        { $push: { "posts.$.replies": { text: text, author: "unknown user"} }
+        { $push: { "posts.$.replies": { text: text, author: req.session.email} }
         },
 
 
@@ -387,7 +397,6 @@ app.post("/replyPost", multipart, (req, res) => {
             console.log(`Err: ${err}`);
             throw err;
           }
-console.log(JSON.stringify(res2, null, 2));
           console.log("Done");
           res.send(JSON.stringify({ result: true }));
         });
