@@ -10,6 +10,10 @@ Create profile design ❌
 
 Allow replies on profiles ❌  
 
+Show list of following and followers ❌   
+
+Follow profiles ❌    
+
 Increase size of UX ❌  
 
 Replace Arrays By Objects in MongoDB ❌  
@@ -49,6 +53,8 @@ Evaluate change from express-session to Google OAUTH ❌
 Evaluate change from express-session to Passport.js ❌  
 
 Validate email, password and tos (input from client) ❌  
+  + Do not allow plus (+) and % on email register.   
+  + Carefull with request forgery.  
  
 Use a email service to register a new account ❌   
   
