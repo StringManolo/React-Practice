@@ -8,6 +8,8 @@ Option to upload images and or use url ❌
 
 Create profile design ❌  
 
+Bio, states, profile info ❌   
+
 Allow replies on profiles ❌  
 
 Show list of following and followers ❌   
