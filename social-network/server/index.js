@@ -20,8 +20,7 @@ const multipartToString = formData => {
         data.tos = formData[i].data.toString();
       break;
 
-      case "post":
-        data.post = formData[i].data.toString();
+      case "post":                                                                              data.post = formData[i].data.toString();
       break;
 
       case "deletePost":
@@ -35,21 +34,22 @@ const multipartToString = formData => {
       case "text":
         data.text = formData[i].data.toString();
       break;
-
+                                                                                              case "profileEmail":
+        data.profileEmail = formData[i].data.toString();
+      break;                                                                            
     }
   }
-  return [data.email, data.password, data.tos, data.post, data.deletePost,  [data.replied, data.text]];
+  return [data.email, data.password, data.tos, data.post, data.deletePost,  [data.replied, data.text, data.profileEmail]];
 }
-
-/* Express middleware */
+                                                                                        /* Express middleware */
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
-  secret: '99RX-PWPE6CZA7Z-4',
-  resave: false,
+  secret: '99RX-PWPE6CZA7Z-4',                                                            resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: false                                                                       }
+    httpOnly: false
+  }
 }));
 app.use(/* allow fetch from react in dev */ (req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -375,24 +375,19 @@ app.get("/profiles/:email", multipart, (req, res) => {
 app.post("/replyPost", multipart, (req, res) => {
   if (req.session.email) {
     if (req.formData) {
-      const [replyId, text] = multipartToString(req.formData)[5];
+      let [replyId, text, profileEmail] = multipartToString(req.formData)[5];
+      if (profileEmail) {
+        profileEmail = profileEmail.replace("+", "@");
+      }
 
-
-/* Not matching posts id */
       insertDocumentIntoCollection(dbname, collection, dbo => {
-
-
         dbo.collection(collection).updateOne({ $and: [
-          { email: req.session.email},
+          { email: profileEmail || req.session.email},
           { posts: { $elemMatch: {id: +replyId} } }
         ] },
 
         { $push: { "posts.$.replies": { text: text, author: req.session.email} }
-        },
-
-
-(err, res2) => {
-//Replace unknown user by formated email
+        }, (err, res2) => {
           if (err) {
             console.log(`Err: ${err}`);
             throw err;
@@ -403,5 +398,4 @@ app.post("/replyPost", multipart, (req, res) => {
       });
     }
   }
-
 });

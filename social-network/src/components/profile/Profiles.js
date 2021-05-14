@@ -11,9 +11,29 @@ const Profiles = props => {
   const [ profileFollowers, setProfileFollowers ] = useState("");
   const [ profileFollowing, setProfileFollowing ] = useState("");
   const [ loginRedir, setLoginRedir ] = useState("");
-
-
   const { id } = props.match.params;
+
+  const openReply = e => {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("replied", e.target.getAttribute("postId"))
+    formData.append("text", e.target.getAttribute("textareaValue"));
+    formData.append("profileEmail", id);
+
+    fetch("http://localhost:8000/replyPost", {
+      method: "post",
+      credentials: "include",
+      body: formData
+    })
+    .then( res => res.json())
+    .then( data => {
+      fetchProfile();
+    })
+    .catch( err => alert(err) );
+
+  }
+
   const fetchProfile = () => {
     fetch(`http://localhost:8000/profiles/${id}`, {
       method: "get",
@@ -39,7 +59,7 @@ const Profiles = props => {
         }
 
         if (data.data.posts) {
-          setProfilePosts(<Posts posts={data.data.posts} />);
+          setProfilePosts(<Posts posts={data.data.posts} openReply={openReply}/>);
         }
 	      
         /*if (data.data.posts) {
@@ -73,7 +93,7 @@ const Profiles = props => {
     fetchProfile();
   }, []); 
 
-
+  
 
   return (
     <div className="profileDiv">

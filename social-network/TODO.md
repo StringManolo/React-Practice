@@ -6,7 +6,11 @@ Allow to mention other users or comment in other profiles ❌
 
 Option to upload images and or use url ❌  
 
-Create profile design ❌
+Create profile design ❌  
+
+Allow replies on profiles ❌  
+
+Increase size of UX ❌  
 
 Replace Arrays By Objects in MongoDB ❌  
 
