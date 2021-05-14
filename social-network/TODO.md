@@ -50,7 +50,11 @@ Use a email service to register a new account ❌
   
 Use a email service to reset passwords ❌  
   
-Implement csfr tokens ❌   
+Implement csfr tokens ❌  
+
+Remove path traversal ❌ 
+
+Remove injections (maybe splitted emails only alfanumeric) ❌   
 
 Implement password hashing (argondi) ❌  
 

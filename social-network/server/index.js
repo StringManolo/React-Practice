@@ -1,38 +1,48 @@
-const express = require("express");                                    const bodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;                    const MongoServer = require("mongodb").Server;                         const session = require("express-session");
-const multipart = require("express-parse-multipart");                  const multipartToString = formData => {                                  let data = {};
-  for(let i in formData) {                                                 switch(formData[i].name) {
-      case "email":                                                            data.email = formData[i].data.toString();
-      break;                                                           
-      case "password":                                                         data.password = formData[i].data.toString();                         break;
-                                                                             case "tos":                                                              data.tos = formData[i].data.toString();
-      break;                                                           
-      case "post":                                                             data.post = formData[i].data.toString();
+const express = require("express");
+const bodyParser = require("body-parser");
+const MongoClient = require("mongodb").MongoClient;
+const MongoServer = require("mongodb").Server;
+const session = require("express-session");                                             const multipart = require("express-parse-multipart");
+const multipartToString = formData => {
+  let data = {};                                                                          for(let i in formData) {
+    switch(formData[i].name) {                                                                case "email":
+        data.email = formData[i].data.toString();
       break;
 
-      case "deletePost":                                                       data.deletePost = formData[i].data.toString();
+      case "password":
+        data.password = formData[i].data.toString();
       break;
 
+      case "tos":
+        data.tos = formData[i].data.toString();
+      break;
+
+      case "post":
+        data.post = formData[i].data.toString();                                              break;
+
+      case "deletePost":
+        data.deletePost = formData[i].data.toString();
+      break;                                                                            
       case "replied":
-        data.replied = formData[i].data.toString();                          break;
-
-      case "text":
+        data.replied = formData[i].data.toString();                                           break;
+                                                                                              case "text":
         data.text = formData[i].data.toString();
-      break;                                                           
+      break;
+
     }
-  }                                                                      return [data.email, data.password, data.tos, data.post, data.deletePost,  [data.replied, data.text]];
+  }
+  return [data.email, data.password, data.tos, data.post, data.deletePost,  [data.replied, data.text]];
 }
 
 /* Express middleware */
-const app = express();                                                 app.use(bodyParser.urlencoded({ extended: true }))                     app.use(session({
-  secret: '99RX-PWPE6CZA7Z-4',                                           resave: false,
+const app = express();                                                                  app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({                                                                         secret: '99RX-PWPE6CZA7Z-4',
+  resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: false
-  }
+    httpOnly: false                                                                       }
 }));
-app.use(/* allow fetch from react in dev */ (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
+app.use(/* allow fetch from react in dev */ (req, res, next) => {                         res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
@@ -258,7 +268,7 @@ app.post("/profile", multipart, (req, res) => {
             throw err;
           } else {
 
-            postId = res2.posts.length ? res2.posts[res2.posts.length - 1].id : 1;
+            postId = res2.posts.length ? res2.posts[res2.posts.length - 1].id : 0;
 
             insertDocumentIntoCollection(dbname, collection, dbo => {
               dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { posts: { text: req.post, id: ++postId } } }, (err, res2) => {
@@ -292,16 +302,10 @@ app.post("/deletePost", multipart, (req, res) => {
       const deleteId = multipartToString(req.formData)[4];
 console.log(deleteId);
       insertDocumentIntoCollection(dbname, collection, dbo => {
-        dbo.collection(collection).updateOne( { email: req.session.email }, { $pull: { posts: { $in: [ +deleteId ]  } }  }, (err, res2) => {
+        dbo.collection(collection).updateOne( { email: req.session.email }, { $pull: { posts: { id: +deleteId  } }  }, (err, res2) => {
           /* handle crashes and errors and send them trought api */
           console.log("Done");
           res.send(JSON.stringify({ result: true }));
-
-/*
-  TODO: CHANGE ID?
-*/
-
-
         });
       });
     }
@@ -340,6 +344,9 @@ app.get("/profiles/:email", multipart, (req, res) => {
             posts: res2.posts,
             postId: res2.postId
           };
+
+/* TEST IF ID IS WELL INSERTED TO ALLOW POSTS REPLY ON OTHER PROFILE */
+
           res.send(JSON.stringify({ result: true, data: profileInfo }));
         }
       });
@@ -354,18 +361,33 @@ app.get("/profiles/:email", multipart, (req, res) => {
 
 });
 
-/*
+
 app.post("/replyPost", multipart, (req, res) => {
   if (req.session.email) {
     if (req.formData) {
       const [replyId, text] = multipartToString(req.formData)[5];
 
+
+/* Not matching posts id */
       insertDocumentIntoCollection(dbname, collection, dbo => {
-        dbo.collection(collection).updateOne({ email: req.session.email }, { $push: { "posts.$.[replyId].$.[3]": { $each: [text, "unknown user"] } } }, (err, res2) => {
+
+
+        dbo.collection(collection).updateOne({ $and: [
+          { email: req.session.email},
+          { posts: { $elemMatch: {id: +replyId} } }
+        ] },
+
+        { $push: { "posts.$.replies": { text: text, author: "unknown user"} }
+        },
+
+
+(err, res2) => {
+//Replace unknown user by formated email
           if (err) {
             console.log(`Err: ${err}`);
             throw err;
           }
+console.log(JSON.stringify(res2, null, 2));
           console.log("Done");
           res.send(JSON.stringify({ result: true }));
         });
@@ -374,4 +396,3 @@ app.post("/replyPost", multipart, (req, res) => {
   }
 
 });
-*/
