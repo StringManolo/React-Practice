@@ -22,6 +22,7 @@ body {
   text-align: middle;
   text-size-adjust: none; /* Fix Android Big Text */
   text-rendering: optimizeLegibility; /* Improve text */
+  margin-bottom: 4px; /* Some Android screens cover bottom viewport */
 }
 
 
@@ -273,7 +274,7 @@ body {
 /* components/profile/Profile.js */
 
 .profileDiv {
-
+  margin-bottom: 30px;
 }
 
 .profileLinks {
@@ -366,23 +367,30 @@ body {
 
 
 /* components/profile/Promotion.js */
-/*
-.profilePromotion {
 
+.profilePromotion {
+  margin-left: 2px;
+  margin-top: 6px;
+  text-align: center;
 }
 
 .profilePromotion.title {
-
+  display: inline-block;
 }
 
 .profilePromotion.slogan {
-
+  display: inline-block;
+  margin-left: 1em;
 }
 
 .profilePromotion.url {
-
+  display: block;
+  margin-left: 6px;
+  color: var(--color1);
+  text-decoration: none;
+  margin-top: 4px;
 }
-*/
+
 
 
 
